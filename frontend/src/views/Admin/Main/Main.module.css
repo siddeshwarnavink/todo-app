@@ -1,0 +1,52 @@
+.Main {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 5rem;
+    margin-bottom: .5rem;
+}
+
+.TopStatusCard {
+    display: flex;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.TopStatusCard > .Logo {
+    width: 10rem;
+}
+
+.TopStatusCard > h1 {
+    margin-left: 1rem;
+}
+
+.Spacer {
+    flex: 1;
+}
+
+.StatusCard {
+    display: flex;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px solid #cccccc;
+}
+
+.StatusCard > .Status {
+    padding: 1rem;
+}
+
+.StatusCard > .Status > .Count {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+    display: block;
+}
+
+@media only screen and (max-width: 768px) {
+    .TopStatusCard > .Logo {
+        width: 5rem;
+    }
+
+    .TopStatusCard > h1 {
+        font-size: 15px;
+    }
+}

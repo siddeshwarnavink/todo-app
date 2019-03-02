@@ -1,0 +1,13 @@
+.ViewUser {
+    text-align: center;
+    margin: auto;
+    margin-top: 5rem;
+    max-width: 25rem;
+}
+
+.Title > i {
+    margin: 0;
+    padding: 0.2rem;
+    width: 1rem;
+    color: #fbc02d;
+}

@@ -1,0 +1,19 @@
+.GroupCard {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    box-shadow:0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    margin-right: 1rem;
+    margin-top: 1rem;
+}
+
+.GroupCard > a {
+    text-decoration: none;
+    color: #000000;
+}
+
+@media (max-width:600px) {
+    .GroupCard {
+        width: 70%;
+    }
+}

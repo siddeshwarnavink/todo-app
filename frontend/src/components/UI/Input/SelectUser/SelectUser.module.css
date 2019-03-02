@@ -1,0 +1,26 @@
+.SelectUser {
+    border: 1px solid #cccccc;
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.Header {
+    margin: 0;
+    padding: 0px 1rem;
+}
+
+.List {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.List > li {
+    padding: 8px 16px;
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.List > li > span {
+    width: 95%;
+}

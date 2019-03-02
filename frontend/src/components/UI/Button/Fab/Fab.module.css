@@ -1,0 +1,26 @@
+.Fab {
+    border: 1px solid #8080ff;
+    box-shadow: 0px 5px 11px -2px rgba(0, 0, 0, 0.18), 0px 4px 12px -7px rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    display: block;
+    width: 56px;
+    height: 56px;
+    position: fixed;
+    outline: none;
+    -webkit-transition: all .1s ease-out;
+    transition: all .1s ease-out;
+    font-size: 20px;
+    background-color: #8080ff;
+    color: #ffffff;
+    bottom: 1rem;
+    right: 1rem;
+    cursor: pointer;
+}
+
+.Fab:hover,
+.Fab:active,
+.Fab:focus
+{
+    box-shadow: 0 0 4px rgba(0,0,0,.14),
+    0 4px 8px rgba(0,0,0,.28);
+}

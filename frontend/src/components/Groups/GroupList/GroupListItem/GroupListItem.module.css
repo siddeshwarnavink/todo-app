@@ -1,0 +1,19 @@
+.GroupListItem {
+    cursor: pointer;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+a.Link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.GroupListItem:hover {
+    background-color: #ccc;
+}
+
+.GroupListItem > i {
+    color: #fbc02d;
+    font-size: 1rem;
+}

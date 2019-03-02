@@ -1,0 +1,50 @@
+.Toolbar {
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0rem 1rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
+}
+
+.Toolbar .Logo {
+    font-size: 21px;
+}
+
+.Toolbar .Logo .LogoImg {
+    width: 5.5rem;
+}
+
+.Toolbar .Logo > a {
+    text-decoration: none;
+    color: #8080ff;
+}
+
+.Spacer {
+    flex: 1;
+}
+
+.Navigation {
+    margin-right: 2.5%;
+}
+
+.Navigation ul {
+    list-style: none;
+}
+
+.Navigation ul li {
+    display: inline;
+}
+
+.Navigation ul li a {
+    padding: 10px 16px;
+    color: #8080ff;
+    font-weight: bold;
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    text-decoration: none;
+}

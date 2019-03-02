@@ -1,0 +1,10 @@
+.Notification {
+    padding: 10px;
+    border: 1px solid #efefef;
+    display: flex;
+    align-items: center;
+}
+
+.Notification * {
+    padding: 5px;
+}
