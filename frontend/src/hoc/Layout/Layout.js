@@ -15,6 +15,7 @@ class Layout extends Component {
           isLoggedIn={this.props.isLoggedIn}
           isAdmin={this.props.isAdmin}
           logo={this.props.logo}
+          userId={this.props.userId}
         />
         <div>{this.props.children}</div>
 
@@ -28,6 +29,7 @@ class Layout extends Component {
   }
 }
 const mapStateToProps = state => ({
+  userId: state.auth.user.id,
   isLoggedIn: state.auth.isLoggedIn,
   notifyMessages: state.flashNotify.messages,
   isAdmin: state.auth.user.isAdmin === true,

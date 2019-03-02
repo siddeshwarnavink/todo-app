@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import classes from "./Homepage.module.css";
 import * as actions from "../store/actions";
 import authRequired from "../hoc/authRequired/authRequired";
 

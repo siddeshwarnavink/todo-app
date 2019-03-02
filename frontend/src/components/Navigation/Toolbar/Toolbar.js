@@ -25,6 +25,10 @@ const Toolbar = props => (
             <Link style={{ color: "#000" }} to="/notification">
               <i className="material-icons">notifications_none</i>
             </Link>
+
+            <Link style={{ color: "#000" }} to={`/user/${props.userId}`}>
+              <i className="material-icons">person</i>
+            </Link>
           </li>
         )}
         {props.isAdmin && (
