@@ -7,7 +7,9 @@ const initialState = {
   taskLoading: false,
   task: {},
   taskMembersLoading: false,
-  taskMembers: []
+  taskMembers: [],
+  tasks: [],
+  tasksLoading: false
 };
 
 const groupTaskStart = (state, action) => {
@@ -49,6 +51,20 @@ const taskMembersSuccess = (state, action) => {
   });
 };
 
+const tasksStart = (state, action) => {
+  return updateObject(state, {
+    tasksLoading: true,
+    tasks: []
+  });
+};
+
+const tasksSuccess = (state, action) => {
+  return updateObject(state, {
+    tasksLoading: false,
+    tasks: action.tasks
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GROUP_TASKS_START:
@@ -68,6 +84,12 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.TASK_MEMBERS_SUCCESS:
       return taskMembersSuccess(state, action);
+
+    case actionTypes.TASKS_START:
+      return tasksStart(state, action);
+
+    case actionTypes.TASKS_SUCCESS:
+      return tasksSuccess(state, action);
 
     default:
       return state;

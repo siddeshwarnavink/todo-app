@@ -14,7 +14,8 @@ export {
   initTaskMembers,
   createTask,
   completeTask,
-  editTask
+  editTask,
+  initTasks
 } from "./tasks";
 
 export { initNotifications, onClearNotifications } from "./notifications";

@@ -31,6 +31,15 @@ const taskMembersSuccess = taskMembers => ({
   taskMembers
 });
 
+const tasksStart = () => ({
+  type: actionTypes.TASKS_START
+});
+
+const tasksSuccess = tasks => ({
+  type: actionTypes.TASKS_SUCCESS,
+  tasks
+});
+
 // Async
 export const initGroupTasks = groupId => dispatch => {
   dispatch(groupTaskStart());
@@ -193,5 +202,28 @@ export const editTask = (task, taskId, goFunc) => dispatch => {
       );
       goFunc("/task/" + taskId);
       dispatch(initTask(taskId));
+    });
+};
+
+export const initTasks = () => dispatch => {
+  dispatch(tasksStart());
+
+  axios
+    .post(
+      `/?token=${localStorage.getItem("token")}`,
+      JSON.stringify({
+        query: `
+        {
+          tasks {
+            id
+            title
+            description
+          }
+        }        
+        `
+      })
+    )
+    .then(({ data }) => {
+      dispatch(tasksSuccess(data.data.tasks));
     });
 };

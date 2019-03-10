@@ -164,5 +164,25 @@ return [
         DB::table('task_user')->where('task_id', $args['id'])->delete();
 
         return true;
+    },
+
+    'tasks' => function ($root, $args) {
+        AuthRequired($root);
+
+        $tasks = [];
+        $relationTasks = DB::table('task_user')->where('user_id', $root['isAuth']->user->id)->get();
+
+        foreach($relationTasks as $relationTask) {
+            $raw_tasks = Task::where('id', $relationTask->task_id)->get();
+            $newTasks = [];
+            
+            foreach($raw_tasks as $key => $task) {
+                $newTasks[] = transformTask($raw_tasks[$key], $root['isAuth']->user->id);
+            }
+
+            $tasks = array_merge($tasks, $newTasks);
+        }
+
+        return $tasks;
     }
 ];

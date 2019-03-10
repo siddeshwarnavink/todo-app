@@ -22,6 +22,8 @@ export const TASK_START = "TASK_START";
 export const TASK_SUCCESS = "TASK_SUCCESS";
 export const TASK_MEMBERS_START = "TASK_MEMBERS_START";
 export const TASK_MEMBERS_SUCCESS = "TASK_MEMBERS_SUCCESS";
+export const TASKS_START = "TASKS_START";
+export const TASKS_SUCCESS = "TASKS_SUCCESS";
 
 // Notifications
 export const NOTIFICATION_START = "NOTIFICATION_START";

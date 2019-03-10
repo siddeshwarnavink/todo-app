@@ -66,7 +66,7 @@ class EditTask extends Component {
         validation: {
           required: true
         },
-        value: this.props.taskData.starts_at,
+        value: new Date(this.props.taskData.starts_at),
         valid: false,
         touched: false
       },
@@ -78,7 +78,7 @@ class EditTask extends Component {
         validation: {
           required: true
         },
-        value: this.props.taskData.ends_at,
+        value: new Date(this.props.taskData.ends_at),
         valid: false,
         touched: false
       }

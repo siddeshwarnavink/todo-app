@@ -11,9 +11,3 @@
     text-decoration: none;
     color: #000000;
 }
-
-@media (max-width:600px) {
-    .GroupCard {
-        width: 70%;
-    }
-}
