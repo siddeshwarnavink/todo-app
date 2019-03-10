@@ -8,6 +8,7 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
     );
 
@@ -15,18 +16,12 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Contracts\\' => 18,
             'Symfony\\Component\\Translation\\' => 30,
             'Siddeshrocks\\' => 13,
         ),
         'R' => 
         array (
             'Respect\\Validation\\' => 19,
-        ),
-        'P' => 
-        array (
-            'Psr\\SimpleCache\\' => 16,
-            'Psr\\Container\\' => 14,
         ),
         'I' => 
         array (
@@ -43,20 +38,12 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
         array (
             'Firebase\\JWT\\' => 13,
         ),
-        'D' => 
-        array (
-            'Doctrine\\Common\\Inflector\\' => 26,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
-        ),
-        'Symfony\\Contracts\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/contracts',
         ),
         'Symfony\\Component\\Translation\\' => 
         array (
@@ -69,14 +56,6 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
         'Respect\\Validation\\' => 
         array (
             0 => __DIR__ . '/..' . '/respect/validation/library',
-        ),
-        'Psr\\SimpleCache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/simple-cache/src',
-        ),
-        'Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
         'Illuminate\\Support\\' => 
         array (
@@ -102,14 +81,20 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Doctrine\\Common\\Inflector\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
-        ),
     );
 
     public static $fallbackDirsPsr4 = array (
         0 => __DIR__ . '/..' . '/nesbot/carbon/src',
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Doctrine\\Common\\Inflector\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/doctrine/inflector/lib',
+            ),
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -118,6 +103,7 @@ class ComposerStaticInita0782659ab9db266c6d7cb960fd2107e
             $loader->prefixLengthsPsr4 = ComposerStaticInita0782659ab9db266c6d7cb960fd2107e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInita0782659ab9db266c6d7cb960fd2107e::$prefixDirsPsr4;
             $loader->fallbackDirsPsr4 = ComposerStaticInita0782659ab9db266c6d7cb960fd2107e::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInita0782659ab9db266c6d7cb960fd2107e::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

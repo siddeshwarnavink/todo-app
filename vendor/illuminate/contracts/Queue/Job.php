@@ -5,33 +5,11 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
-     * Get the job identifier.
-     *
-     * @return string
-     */
-    public function getJobId();
-
-    /**
-     * Get the decoded body of the job.
-     *
-     * @return array
-     */
-    public function payload();
-
-    /**
      * Fire the job.
      *
      * @return void
      */
     public function fire();
-
-    /**
-     * Release the job back into the queue.
-     *
-     * @param  int   $delay
-     * @return void
-     */
-    public function release($delay = 0);
 
     /**
      * Delete the job from the queue.
@@ -48,6 +26,14 @@ interface Job
     public function isDeleted();
 
     /**
+     * Release the job back into the queue.
+     *
+     * @param  int   $delay
+     * @return void
+     */
+    public function release($delay = 0);
+
+    /**
      * Determine if the job has been deleted or released.
      *
      * @return bool
@@ -62,35 +48,6 @@ interface Job
     public function attempts();
 
     /**
-     * Process an exception that caused the job to fail.
-     *
-     * @param  \Throwable  $e
-     * @return void
-     */
-    public function failed($e);
-
-    /**
-     * Get the number of times to attempt a job.
-     *
-     * @return int|null
-     */
-    public function maxTries();
-
-    /**
-     * Get the number of seconds the job can run.
-     *
-     * @return int|null
-     */
-    public function timeout();
-
-    /**
-     * Get the timestamp indicating when the job should timeout.
-     *
-     * @return int|null
-     */
-    public function timeoutAt();
-
-    /**
      * Get the name of the queued job class.
      *
      * @return string
@@ -98,20 +55,11 @@ interface Job
     public function getName();
 
     /**
-     * Get the resolved name of the queued job class.
+     * Call the failed method on the job instance.
      *
-     * Resolves the name of "wrapped" jobs such as class-based handlers.
-     *
-     * @return string
+     * @return void
      */
-    public function resolveName();
-
-    /**
-     * Get the name of the connection the job belongs to.
-     *
-     * @return string
-     */
-    public function getConnectionName();
+    public function failed();
 
     /**
      * Get the name of the queue the job belongs to.
@@ -120,10 +68,10 @@ interface Job
      */
     public function getQueue();
 
-    /**
-     * Get the raw body string for the job.
-     *
-     * @return string
-     */
-    public function getRawBody();
+     /**
+      * Get the raw body string for the job.
+      *
+      * @return string
+      */
+     public function getRawBody();
 }

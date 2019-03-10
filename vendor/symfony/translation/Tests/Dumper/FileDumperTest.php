@@ -22,38 +22,37 @@ class FileDumperTest extends TestCase
         $tempDir = sys_get_temp_dir();
 
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add(array('foo' => 'bar'));
+        $catalogue->add(['foo' => 'bar']);
 
         $dumper = new ConcreteFileDumper();
-        $dumper->dump($catalogue, array('path' => $tempDir));
+        $dumper->dump($catalogue, ['path' => $tempDir]);
 
         $this->assertFileExists($tempDir.'/messages.en.concrete');
 
         @unlink($tempDir.'/messages.en.concrete');
     }
 
-    public function testDumpIntl()
+    /**
+     * @group legacy
+     */
+    public function testDumpBackupsFileIfExisting()
     {
         $tempDir = sys_get_temp_dir();
+        $file = $tempDir.'/messages.en.concrete';
+        $backupFile = $file.'~';
+
+        @touch($file);
 
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add(array('foo' => 'bar'), 'd1');
-        $catalogue->add(array('bar' => 'foo'), 'd1+intl-icu');
-        $catalogue->add(array('bar' => 'foo'), 'd2+intl-icu');
+        $catalogue->add(['foo' => 'bar']);
 
         $dumper = new ConcreteFileDumper();
-        @unlink($tempDir.'/d2.en.concrete');
-        $dumper->dump($catalogue, array('path' => $tempDir));
+        $dumper->dump($catalogue, ['path' => $tempDir]);
 
-        $this->assertStringEqualsFile($tempDir.'/d1.en.concrete', 'foo=bar');
-        @unlink($tempDir.'/d1.en.concrete');
+        $this->assertFileExists($backupFile);
 
-        $this->assertStringEqualsFile($tempDir.'/d1+intl-icu.en.concrete', 'bar=foo');
-        @unlink($tempDir.'/d1+intl-icu.en.concrete');
-
-        $this->assertFileNotExists($tempDir.'/d2.en.concrete');
-        $this->assertStringEqualsFile($tempDir.'/d2+intl-icu.en.concrete', 'bar=foo');
-        @unlink($tempDir.'/d2+intl-icu.en.concrete');
+        @unlink($file);
+        @unlink($backupFile);
     }
 
     public function testDumpCreatesNestedDirectoriesAndFile()
@@ -63,11 +62,11 @@ class FileDumperTest extends TestCase
         $file = $translationsDir.'/messages.en.concrete';
 
         $catalogue = new MessageCatalogue('en');
-        $catalogue->add(array('foo' => 'bar'));
+        $catalogue->add(['foo' => 'bar']);
 
         $dumper = new ConcreteFileDumper();
         $dumper->setRelativePathTemplate('test/translations/%domain%.%locale%.%extension%');
-        $dumper->dump($catalogue, array('path' => $tempDir));
+        $dumper->dump($catalogue, ['path' => $tempDir]);
 
         $this->assertFileExists($file);
 
@@ -78,9 +77,9 @@ class FileDumperTest extends TestCase
 
 class ConcreteFileDumper extends FileDumper
 {
-    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = array())
+    public function formatCatalogue(MessageCatalogue $messages, $domain, array $options = [])
     {
-        return http_build_query($messages->all($domain), '', '&');
+        return '';
     }
 
     protected function getExtension()

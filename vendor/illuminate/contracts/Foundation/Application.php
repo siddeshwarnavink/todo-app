@@ -23,23 +23,10 @@ interface Application extends Container
     /**
      * Get or check the current application environment.
      *
+     * @param  mixed
      * @return string
      */
     public function environment();
-
-    /**
-     * Determine if the application is running in the console.
-     *
-     * @return bool
-     */
-    public function runningInConsole();
-
-    /**
-     * Determine if the application is running unit tests.
-     *
-     * @return bool
-     */
-    public function runningUnitTests();
 
     /**
      * Determine if the application is currently down for maintenance.
@@ -59,16 +46,17 @@ interface Application extends Container
      * Register a service provider with the application.
      *
      * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  array  $options
      * @param  bool   $force
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $force = false);
+    public function register($provider, $options = [], $force = false);
 
     /**
      * Register a deferred provider and service.
      *
      * @param  string  $provider
-     * @param  string|null  $service
+     * @param  string  $service
      * @return void
      */
     public function registerDeferredProvider($provider, $service = null);
@@ -97,16 +85,16 @@ interface Application extends Container
     public function booted($callback);
 
     /**
+     * Get the path to the cached "compiled.php" file.
+     *
+     * @return string
+     */
+    public function getCachedCompilePath();
+
+    /**
      * Get the path to the cached services.php file.
      *
      * @return string
      */
     public function getCachedServicesPath();
-
-    /**
-     * Get the path to the cached packages.php file.
-     *
-     * @return string
-     */
-    public function getCachedPackagesPath();
 }

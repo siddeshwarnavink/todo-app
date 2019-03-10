@@ -51,7 +51,7 @@ class SeedCommand extends Command
      *
      * @return void
      */
-    public function handle()
+    public function fire()
     {
         if (! $this->confirmToProceed()) {
             return;
@@ -60,10 +60,8 @@ class SeedCommand extends Command
         $this->resolver->setDefaultConnection($this->getDatabase());
 
         Model::unguarded(function () {
-            $this->getSeeder()->__invoke();
+            $this->getSeeder()->run();
         });
-
-        $this->info('Database seeding completed successfully.');
     }
 
     /**
@@ -102,7 +100,7 @@ class SeedCommand extends Command
 
             ['database', null, InputOption::VALUE_OPTIONAL, 'The database connection to seed'],
 
-            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production'],
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production.'],
         ];
     }
 }

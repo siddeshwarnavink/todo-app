@@ -5,21 +5,12 @@ namespace Illuminate\Database\Eloquent\Relations;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Traits\ForwardsCalls;
 
-/**
- * @mixin \Illuminate\Database\Eloquent\Builder
- */
 abstract class Relation
 {
-    use ForwardsCalls, Macroable {
-        __call as macroCall;
-    }
-
     /**
      * The Eloquent query builder instance.
      *
@@ -53,7 +44,7 @@ abstract class Relation
      *
      * @var array
      */
-    public static $morphMap = [];
+    protected static $morphMap = [];
 
     /**
      * Create a new relation instance.
@@ -69,28 +60,6 @@ abstract class Relation
         $this->related = $query->getModel();
 
         $this->addConstraints();
-    }
-
-    /**
-     * Run a callback with constraints disabled on the relation.
-     *
-     * @param  \Closure  $callback
-     * @return mixed
-     */
-    public static function noConstraints(Closure $callback)
-    {
-        $previous = static::$constraints;
-
-        static::$constraints = false;
-
-        // When resetting the relation where clause, we want to shift the first element
-        // off of the bindings, leaving only the constraints that the developers put
-        // as "extra" on the relationships, and not original relation constraints.
-        try {
-            return call_user_func($callback);
-        } finally {
-            static::$constraints = $previous;
-        }
     }
 
     /**
@@ -145,30 +114,15 @@ abstract class Relation
     }
 
     /**
-     * Execute the query as a "select" statement.
-     *
-     * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function get($columns = ['*'])
-    {
-        return $this->query->get($columns);
-    }
-
-    /**
      * Touch all of the related models for the relationship.
      *
      * @return void
      */
     public function touch()
     {
-        $model = $this->getRelated();
+        $column = $this->getRelated()->getUpdatedAtColumn();
 
-        if (! $model::isIgnoringTouch()) {
-            $this->rawUpdate([
-                $model->getUpdatedAtColumn() => $model->freshTimestampString(),
-            ]);
-        }
+        $this->rawUpdate([$column => $this->getRelated()->freshTimestampString()]);
     }
 
     /**
@@ -179,38 +133,60 @@ abstract class Relation
      */
     public function rawUpdate(array $attributes = [])
     {
-        return $this->query->withoutGlobalScopes()->update($attributes);
+        return $this->query->update($attributes);
     }
 
     /**
      * Add the constraints for a relationship count query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
+     * @param  \Illuminate\Database\Eloquent\Builder  $parent
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceCountQuery(Builder $query, Builder $parentQuery)
+    public function getRelationCountQuery(Builder $query, Builder $parent)
     {
-        return $this->getRelationExistenceQuery(
-            $query, $parentQuery, new Expression('count(*)')
-        )->setBindings([], 'select');
+        return $this->getRelationQuery($query, $parent, new Expression('count(*)'));
     }
 
     /**
-     * Add the constraints for an internal relationship existence query.
-     *
-     * Essentially, these queries compare on column names like whereColumn.
+     * Add the constraints for a relationship query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \Illuminate\Database\Eloquent\Builder  $parentQuery
+     * @param  \Illuminate\Database\Eloquent\Builder  $parent
      * @param  array|mixed $columns
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getRelationExistenceQuery(Builder $query, Builder $parentQuery, $columns = ['*'])
+    public function getRelationQuery(Builder $query, Builder $parent, $columns = ['*'])
     {
-        return $query->select($columns)->whereColumn(
-            $this->getQualifiedParentKeyName(), '=', $this->getExistenceCompareKey()
-        );
+        $query->select($columns);
+
+        $key = $this->wrap($this->getQualifiedParentKeyName());
+
+        return $query->where($this->getHasCompareKey(), '=', new Expression($key));
+    }
+
+    /**
+     * Run a callback with constraints disabled on the relation.
+     *
+     * @param  \Closure  $callback
+     * @return mixed
+     */
+    public static function noConstraints(Closure $callback)
+    {
+        $previous = static::$constraints;
+
+        static::$constraints = false;
+
+        // When resetting the relation where clause, we want to shift the first element
+        // off of the bindings, leaving only the constraints that the developers put
+        // as "extra" on the relationships, and not original relation constraints.
+        try {
+            $results = call_user_func($callback);
+        } finally {
+            static::$constraints = $previous;
+        }
+
+        return $results;
     }
 
     /**
@@ -222,9 +198,9 @@ abstract class Relation
      */
     protected function getKeys(array $models, $key = null)
     {
-        return collect($models)->map(function ($value) use ($key) {
+        return array_unique(array_values(array_map(function ($value) use ($key) {
             return $key ? $value->getAttribute($key) : $value->getKey();
-        })->values()->unique(null, true)->sort()->all();
+        }, $models)));
     }
 
     /**
@@ -308,19 +284,14 @@ abstract class Relation
     }
 
     /**
-     * Get the name of the "where in" method for eager loading.
+     * Wrap the given value with the parent query's grammar.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
+     * @param  string  $value
      * @return string
      */
-    protected function whereInMethod(Model $model, $key)
+    public function wrap($value)
     {
-        return $model->getKeyName() === last(explode('.', $key))
-                    && $model->getIncrementing()
-                    && in_array($model->getKeyType(), ['int', 'integer'])
-                        ? 'whereIntegerInRaw'
-                        : 'whereIn';
+        return $this->parent->newQueryWithoutScopes()->getQuery()->getGrammar()->wrap($value);
     }
 
     /**
@@ -335,8 +306,7 @@ abstract class Relation
         $map = static::buildMorphMapFromModels($map);
 
         if (is_array($map)) {
-            static::$morphMap = $merge && static::$morphMap
-                            ? $map + static::$morphMap : $map;
+            static::$morphMap = $merge ? array_merge(static::$morphMap, $map) : $map;
         }
 
         return static::$morphMap;
@@ -354,20 +324,11 @@ abstract class Relation
             return $models;
         }
 
-        return array_combine(array_map(function ($model) {
+        $tables = array_map(function ($model) {
             return (new $model)->getTable();
-        }, $models), $models);
-    }
+        }, $models);
 
-    /**
-     * Get the model associated with a custom polymorphic type.
-     *
-     * @param  string  $alias
-     * @return string|null
-     */
-    public static function getMorphedModel($alias)
-    {
-        return self::$morphMap[$alias] ?? null;
+        return array_combine($tables, $models);
     }
 
     /**
@@ -379,11 +340,7 @@ abstract class Relation
      */
     public function __call($method, $parameters)
     {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $parameters);
-        }
-
-        $result = $this->forwardCallTo($this->query, $method, $parameters);
+        $result = call_user_func_array([$this->query, $method], $parameters);
 
         if ($result === $this->query) {
             return $this;

@@ -30,6 +30,10 @@ try {
     $resolvers = require('./graphql/resolvers/root.php');
     $rootValue = array_merge($rootValue, $resolvers);
 
+    set_error_handler(function($severity, $message, $file, $line) use (&$phpErrors) {
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    });
+
     $debug = Debug::INCLUDE_DEBUG_MESSAGE | Debug::RETHROW_INTERNAL_EXCEPTIONS;
 
     $result = GraphQL::executeQuery($schema, $query, $rootValue, null, $variableValues);

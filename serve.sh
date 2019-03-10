@@ -1,1 +1,1 @@
-php -S localhost:9999 index.php
+php5.6 -S localhost:9999 index.php

@@ -2,13 +2,10 @@
 
 namespace Illuminate\Database;
 
-use Illuminate\Support\Traits\Macroable;
 use Illuminate\Database\Query\Expression;
 
 abstract class Grammar
 {
-    use Macroable;
-
     /**
      * The grammar table prefix.
      *
@@ -35,11 +32,11 @@ abstract class Grammar
      */
     public function wrapTable($table)
     {
-        if (! $this->isExpression($table)) {
-            return $this->wrap($this->tablePrefix.$table, true);
+        if ($this->isExpression($table)) {
+            return $this->getValue($table);
         }
 
-        return $this->getValue($table);
+        return $this->wrap($this->tablePrefix.$table, true);
     }
 
     /**
@@ -56,51 +53,34 @@ abstract class Grammar
         }
 
         // If the value being wrapped has a column alias we will need to separate out
-        // the pieces so we can wrap each of the segments of the expression on its
-        // own, and then join these both back together using the "as" connector.
-        if (stripos($value, ' as ') !== false) {
-            return $this->wrapAliasedValue($value, $prefixAlias);
+        // the pieces so we can wrap each of the segments of the expression on it
+        // own, and then joins them both back together with the "as" connector.
+        if (strpos(strtolower($value), ' as ') !== false) {
+            $segments = explode(' ', $value);
+
+            if ($prefixAlias) {
+                $segments[2] = $this->tablePrefix.$segments[2];
+            }
+
+            return $this->wrap($segments[0]).' as '.$this->wrapValue($segments[2]);
         }
 
-        return $this->wrapSegments(explode('.', $value));
-    }
+        $wrapped = [];
 
-    /**
-     * Wrap a value that has an alias.
-     *
-     * @param  string  $value
-     * @param  bool  $prefixAlias
-     * @return string
-     */
-    protected function wrapAliasedValue($value, $prefixAlias = false)
-    {
-        $segments = preg_split('/\s+as\s+/i', $value);
+        $segments = explode('.', $value);
 
-        // If we are wrapping a table we need to prefix the alias with the table prefix
-        // as well in order to generate proper syntax. If this is a column of course
-        // no prefix is necessary. The condition will be true when from wrapTable.
-        if ($prefixAlias) {
-            $segments[1] = $this->tablePrefix.$segments[1];
+        // If the value is not an aliased table expression, we'll just wrap it like
+        // normal, so if there is more than one segment, we will wrap the first
+        // segments as if it was a table and the rest as just regular values.
+        foreach ($segments as $key => $segment) {
+            if ($key == 0 && count($segments) > 1) {
+                $wrapped[] = $this->wrapTable($segment);
+            } else {
+                $wrapped[] = $this->wrapValue($segment);
+            }
         }
 
-        return $this->wrap(
-            $segments[0]).' as '.$this->wrapValue($segments[1]
-        );
-    }
-
-    /**
-     * Wrap the given value segments.
-     *
-     * @param  array  $segments
-     * @return string
-     */
-    protected function wrapSegments($segments)
-    {
-        return collect($segments)->map(function ($segment, $key) use ($segments) {
-            return $key == 0 && count($segments) > 1
-                            ? $this->wrapTable($segment)
-                            : $this->wrapValue($segment);
-        })->implode('.');
+        return implode('.', $wrapped);
     }
 
     /**
@@ -111,11 +91,11 @@ abstract class Grammar
      */
     protected function wrapValue($value)
     {
-        if ($value !== '*') {
-            return '"'.str_replace('"', '""', $value).'"';
+        if ($value === '*') {
+            return $value;
         }
 
-        return $value;
+        return '"'.str_replace('"', '""', $value).'"';
     }
 
     /**
@@ -152,18 +132,14 @@ abstract class Grammar
     }
 
     /**
-     * Quote the given string literal.
+     * Get the value of a raw expression.
      *
-     * @param  string|array  $value
+     * @param  \Illuminate\Database\Query\Expression  $expression
      * @return string
      */
-    public function quoteString($value)
+    public function getValue($expression)
     {
-        if (is_array($value)) {
-            return implode(', ', array_map([$this, __FUNCTION__], $value));
-        }
-
-        return "'$value'";
+        return $expression->getValue();
     }
 
     /**
@@ -175,17 +151,6 @@ abstract class Grammar
     public function isExpression($value)
     {
         return $value instanceof Expression;
-    }
-
-    /**
-     * Get the value of a raw expression.
-     *
-     * @param  \Illuminate\Database\Query\Expression  $expression
-     * @return string
-     */
-    public function getValue($expression)
-    {
-        return $expression->getValue();
     }
 
     /**
