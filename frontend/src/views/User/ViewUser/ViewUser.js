@@ -78,7 +78,7 @@ class ViewUser extends Component {
 
     axios
       .post(
-        `/`,
+        `/?token=${localStorage.getItem("token")}`,
         JSON.stringify({
           query: `
           {
