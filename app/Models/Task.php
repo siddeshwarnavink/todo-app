@@ -60,7 +60,8 @@ class Task extends Model
         return (bool) DB::table('task_user')
         ->where('task_id', $this->id)
         ->where('user_id', $userId)
-        ->first();
+        ->first()
+        ->completed;
 
     }
 }
