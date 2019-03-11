@@ -71,6 +71,10 @@ class ViewTask extends Component {
             <main className={classes.Main}>
               <h1>About the task</h1>
               <p>{this.props.task.description}</p>
+              <span className={classes.Dates}>
+                From {new Date(this.props.task.starts_at).toDateString()} to{" "}
+                {new Date(this.props.task.ends_at).toDateString()}
+              </span>
             </main>
           </TabPanel>
           <TabPanel>

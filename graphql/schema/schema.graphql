@@ -70,7 +70,7 @@ type RootQuery {
     group(id: Int!): Group
 
     tasks: [Task!]!
-    groupTask(groupId: Int!): [Task]!
+    groupTask(groupId: Int!): [Task!]!
     task(taskId: Int!): Task
 
     companyStaics: Company!

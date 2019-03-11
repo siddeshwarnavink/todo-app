@@ -53,13 +53,15 @@ return [
 
     'groupTask' => function($root, $args) {
         AuthRequired($root);
+        
         $tasks = Task::where('groupId', $args['groupId'])->get();
+        $transformedTasks = [];
 
-        foreach($tasks as $key => $task) {
-            $tasks[$key] = transformTask($tasks[$key], $root['isAuth']->user->id);
+        foreach($tasks as $task) {
+            $transformedTasks[] = transformTask($task, $root['isAuth']->user->id);
         }
 
-        return $tasks;
+        return $transformedTasks;
     },
 
     'task' => function($root, $args) {
