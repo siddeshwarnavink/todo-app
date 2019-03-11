@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+
 import * as serviceWorker from "./serviceWorker";
+import HttpsRedirect from "react-https-redirect";
 
 // React Router
 import { BrowserRouter } from "react-router-dom";
@@ -39,7 +41,13 @@ const store = createStore(
 const app = (
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      {process.env.NODE_ENV === "development" ? (
+        <App />
+      ) : (
+        <HttpsRedirect>
+          <App />
+        </HttpsRedirect>
+      )}
     </BrowserRouter>
   </Provider>
 );
