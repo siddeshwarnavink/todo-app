@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
       ? "http://localhost:9999"
-      : "https://server.todo-app.siddeshrocks.in/"
+      : "/server/"
 });
 
 export default instance;
