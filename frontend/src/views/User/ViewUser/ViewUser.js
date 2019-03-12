@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import axios from "../../../axios";
 import classes from "./ViewUser.module.css";
 
 import * as actions from "../../../store/actions";
@@ -15,10 +14,12 @@ import EditUser from "../../../components/Users/EditUser/EditUser";
 
 class ViewUser extends Component {
   state = {
-    loading: true,
-    user: {},
     showEditModal: false
   };
+
+  componentDidMount() {
+    this.props.initUser(this.props.match.params.id);
+  }
 
   toggleEditModalHandler = () => {
     this.setState(prvState => ({
@@ -30,8 +31,8 @@ class ViewUser extends Component {
     return !this.props.loading ? (
       <main className={classes.ViewUser}>
         <h1 className={classes.Title}>
-          {this.state.user.username}
-          {this.state.user.isAdmin && (
+          {this.props.user.username}
+          {this.props.user.isAdmin && (
             <i className="material-icons">star_rate</i>
           )}
         </h1>
@@ -51,18 +52,18 @@ class ViewUser extends Component {
         )}
 
         <Modal
-          size={this.props.currentUser.isAdmin ? 4.0 : 3.0}
+          size={this.props.currentUser.isAdmin ? 4.5 : 3.0}
           scroll={false}
           show={this.state.showEditModal}
           modalClosed={this.toggleEditModalHandler}
         >
-          {this.state.user.username && (
+          {this.props.user.username && (
             <EditUser
               notifyFunc={this.props.notify}
               pushFunc={this.props.history.push}
               reAuthFunc={this.props.reAuth}
               userId={this.props.match.params.id}
-              currentUser={this.state.user}
+              currentUser={this.props.user}
               isAdmin={this.props.currentUser.isAdmin}
             />
           )}
@@ -72,44 +73,19 @@ class ViewUser extends Component {
       <Spinner />
     );
   }
-
-  componentDidMount() {
-    this.setState({ loading: true });
-
-    axios
-      .post(
-        `/?token=${localStorage.getItem("token")}`,
-        JSON.stringify({
-          query: `
-          {
-            user(id: ${this.props.match.params.id}) {
-              username,
-              isAdmin
-            }
-          }
-        `
-        })
-      )
-      .then(({ data }) => {
-        this.setState({
-          loading: false,
-          user: data.data.user
-        });
-      })
-      .catch(err => {
-        alert("Error in loading the user!");
-      });
-  }
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.auth.user
+  currentUser: state.auth.user,
+  loading: state.users.loading,
+  user: state.users.user
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutHandler: goFunc => dispatch(actions.logout(goFunc)),
   reAuth: () => dispatch(actions.auth(actions.isLoggedIn())),
-  notify: message => dispatch(actions.notify({ message: message }))
+  notify: message => dispatch(actions.notify({ message: message })),
+  initUser: userId => dispatch(actions.initUser(userId))
 });
 
 export default connect(

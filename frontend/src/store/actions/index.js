@@ -19,3 +19,5 @@ export {
 } from "./tasks";
 
 export { initNotifications, onClearNotifications } from "./notifications";
+
+export { initUser } from "./users";
