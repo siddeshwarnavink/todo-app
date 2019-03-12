@@ -47,8 +47,7 @@ const AddUser = props => {
       },
       value: "",
       validation: {
-        required: true,
-        isEmail: true
+        required: true
       },
       valid: false,
       touched: false

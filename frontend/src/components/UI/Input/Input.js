@@ -68,7 +68,8 @@ const Input = props => {
           <DateTime
             inputProps={{
               ...props.elementConfig,
-              className: inputClasses.join("  ")
+              className: inputClasses.join("  "),
+              onKeyDown: e => e.preventDefault()
             }}
             value={props.value}
             onChange={e => {
