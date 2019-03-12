@@ -17,8 +17,13 @@ class ViewUser extends Component {
     showEditModal: false
   };
 
-  componentDidMount() {
-    this.props.initUser(this.props.match.params.id);
+  constructor(props) {
+    super(props);
+    if (props.match.params.id === "current-user") {
+      props.initUser(props.currentUser.id);
+    } else {
+      props.initUser(props.match.params.id);
+    }
   }
 
   toggleEditModalHandler = () => {
@@ -37,12 +42,12 @@ class ViewUser extends Component {
           )}
         </h1>
         {(this.props.currentUser.isAdmin ||
-          Number(this.props.match.params.id) === this.props.currentUser.id) && (
+          this.props.match.params.id === "current-user") && (
           <Button btnType="Primary" clicked={this.toggleEditModalHandler}>
             EDIT PROFILE
           </Button>
         )}
-        {Number(this.props.match.params.id) === this.props.currentUser.id && (
+        {this.props.match.params.id === "current-user" && (
           <Button
             btnType="Secondary"
             clicked={() => this.props.logoutHandler(this.props.history.push)}

@@ -54,7 +54,24 @@ return [
     'groupTask' => function($root, $args) {
         AuthRequired($root);
         
-        $tasks = Task::where('groupId', $args['groupId'])->get();
+        $tasks = [];
+
+        if($root['isAuth']->user->isAdmin) {
+            $tasks = Task::where('groupId', $args['groupId'])->get();
+        } else {
+            $relationTasks = DB::table('task_user')->where('user_id', $root['isAuth']->user->id)->get();
+            $raw_tasks = [];
+
+            foreach($relationTasks as $relationTask) {
+                $raw_tasks[] = Task::where('id', $relationTask->task_id)
+                                ->where('groupId', $args['groupId'])
+                                ->first();
+            }
+
+            $tasks = array_merge($tasks, $raw_tasks);
+        }
+        
+        
         $transformedTasks = [];
 
         foreach($tasks as $task) {

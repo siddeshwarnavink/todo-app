@@ -51,6 +51,12 @@ const App = props => (
       {/* Notification */}
       <Route exact path="/notification" component={Notification} />
 
+      <Route
+        exact
+        path="/profile"
+        render={() => <Redirect to="/user/current-user" />}
+      />
+
       <Redirect to="/" />
     </Switch>
   </Layout>

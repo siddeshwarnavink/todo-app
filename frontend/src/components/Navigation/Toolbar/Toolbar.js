@@ -26,7 +26,7 @@ const Toolbar = props => (
               <i className="material-icons">notifications_none</i>
             </Link>
 
-            <Link style={{ color: "#000" }} to={`/user/${props.userId}`}>
+            <Link style={{ color: "#000" }} to="/profile">
               <i className="material-icons">person</i>
             </Link>
           </li>

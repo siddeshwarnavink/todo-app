@@ -83,9 +83,8 @@ type RootMutation {
     editGroup(id: Int!, title: String!, description: String!, members: String!): Boolean
     deleteGroup(id: Int!): Boolean
 
-    createUser(username: String!, email: String!, password: String!): User
     editUser(userId: Int!, username: String!, isAdmin: Boolean): User
-    addUser(username: String!, email: String!, isAdmin: Boolean): Boolean
+    addUser(username: String!, email: String!, isAdmin: Boolean, password: String!): Boolean
     deleteUser(id: Int!): Boolean
 
     createTask(title: String!, description: String!, starts_at: String!, ends_at: String!, groupId: Int!, members: String!): Boolean

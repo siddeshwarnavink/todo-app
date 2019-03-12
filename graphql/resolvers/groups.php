@@ -14,14 +14,14 @@ return [
             $relationGroups = DB::table('user_group')->where('userid', $root['isAuth']->user->id)->get();
             
             foreach($relationGroups as $relationGroup) {
-                $groups[] = transformGroup(Group::where('id', $relationGroup->groupid)->first());
+                $groups[] = Group::where('id', $relationGroup->groupid)->first();
             }
         } else {
             $groups = Group::all();
         }
 
         foreach($groups as $key => $group) {
-            transformGroup($groups[$key]);
+            $groups[$key] = transformGroup($group);
         }
 
         return $groups;
