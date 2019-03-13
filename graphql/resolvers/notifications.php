@@ -15,5 +15,11 @@ return [
         Notification::where('user_id', $root['isAuth']->user->id)->delete();
 
         return true;
+    },
+
+    'notificationCount' => function ($root, $args) {
+        AuthRequired($root);
+
+        return Notification::where('user_id', $root['isAuth']->user->id)->count();
     }
 ];

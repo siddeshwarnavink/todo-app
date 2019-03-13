@@ -36,12 +36,3 @@
 .Navigation ul li {
     display: inline;
 }
-
-.Navigation ul li a {
-    padding: 10px 16px;
-    color: #8080ff;
-    font-weight: bold;
-    border: 1px solid #ffffff;
-    border-radius: 10px;
-    text-decoration: none;
-}

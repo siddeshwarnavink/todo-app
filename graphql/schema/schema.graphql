@@ -75,6 +75,7 @@ type RootQuery {
 
     companyStaics: Company!
 
+    notificationCount: Int!
     notifications: [Notification!]!
 }
 

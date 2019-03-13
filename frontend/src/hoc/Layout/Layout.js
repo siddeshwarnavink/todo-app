@@ -3,11 +3,39 @@ import { connect } from "react-redux";
 
 import * as actions from "../../store/actions";
 import classes from "./Layout.module.css";
+import axios from "../../axios";
 
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import FlasNotify from "../../components/FlashNotify/FlashNotify";
 
 class Layout extends Component {
+  state = {
+    notificationCount: 0
+  };
+
+  componentWillReceiveProps() {
+    if (this.props.isLoggedIn) {
+      setInterval(() => {
+        axios
+          .post(
+            `/?token=${localStorage.getItem("token")}`,
+            JSON.stringify({
+              query: `
+          {
+            notificationCount
+          }
+          `
+            })
+          )
+          .then(({ data }) => {
+            if (this.state.notificationCount !== data.data.notificationCount) {
+              this.setState({ notificationCount: data.data.notificationCount });
+            }
+          });
+      }, 2000);
+    }
+  }
+
   render() {
     return (
       <>
@@ -16,6 +44,7 @@ class Layout extends Component {
           isAdmin={this.props.isAdmin}
           logo={this.props.logo}
           userId={this.props.userId}
+          notificationCount={this.state.notificationCount}
         />
         <div>{this.props.children}</div>
 

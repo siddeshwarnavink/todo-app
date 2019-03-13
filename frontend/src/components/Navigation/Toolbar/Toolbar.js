@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import classes from "./Toolbar.module.css";
+import NavigationItem from "./NavigationItem/NavigationItem";
 
 const Toolbar = props => (
   <header className={classes.Toolbar}>
@@ -21,22 +22,19 @@ const Toolbar = props => (
     <div className={classes.Navigation}>
       <ul>
         {props.isLoggedIn && (
-          <li>
-            <Link style={{ color: "#000" }} to="/notification">
+          <>
+            <NavigationItem to="/notification" badge={props.notificationCount}>
               <i className="material-icons">notifications_none</i>
-            </Link>
-
-            <Link style={{ color: "#000" }} to="/profile">
+            </NavigationItem>
+            <NavigationItem to="/profile">
               <i className="material-icons">person</i>
-            </Link>
-          </li>
+            </NavigationItem>
+          </>
         )}
         {props.isAdmin && (
-          <li>
-            <Link style={{ top: "10" }} to="/admin">
-              <i className="material-icons">security</i>
-            </Link>
-          </li>
+          <NavigationItem to="/admin" selected>
+            <i className="material-icons">security</i>
+          </NavigationItem>
         )}
       </ul>
     </div>
