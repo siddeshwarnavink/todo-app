@@ -17,6 +17,27 @@ class Homepage extends Component {
   }
 
   render() {
+    let groups = this.props.groupsError ? (
+      <p>Failed to load the groups</p>
+    ) : (
+      <Spinner />
+    );
+
+    if (this.props.groups) {
+      groups = (
+        <div bp="grid 4@lg 1@sm">
+          {this.props.groups.map(group => (
+            <GroupCard
+              key={group.id}
+              id={group.id}
+              title={group.title}
+              description={group.description}
+            />
+          ))}
+        </div>
+      );
+    }
+
     return (
       <main>
         <h1>Tasks</h1>
@@ -25,22 +46,8 @@ class Homepage extends Component {
         ) : (
           <Spinner />
         )}
-
         <h1>Groups</h1>
-        {!this.props.groupsLoading ? (
-          <div bp="grid 4@lg 1@sm">
-            {this.props.groups.map(group => (
-              <GroupCard
-                key={group.id}
-                id={group.id}
-                title={group.title}
-                description={group.description}
-              />
-            ))}
-          </div>
-        ) : (
-          <Spinner />
-        )}
+        {groups}
       </main>
     );
   }
@@ -49,6 +56,7 @@ class Homepage extends Component {
 const mapStateToProps = state => ({
   groupsLoading: state.groups.loading,
   groups: state.groups.groups,
+  groupsError: state.groups.groupsError,
   tasksLoading: state.tasks.tasksLoading,
   tasks: state.tasks.tasks
 });

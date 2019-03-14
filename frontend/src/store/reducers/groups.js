@@ -4,9 +4,11 @@ import updateObject from "../../utility/updateObject";
 const initialState = {
   loading: false,
   groups: [],
+  groupsError: false,
   group: {},
   groupMembersLoading: false,
-  groupMembers: []
+  groupMembers: [],
+  groupMembersError: false
 };
 
 const groupStart = (state, action) => {
@@ -19,6 +21,13 @@ const groupSuccess = (state, action) => {
   return updateObject(state, {
     loading: false,
     groups: action.groups
+  });
+};
+
+const groupFailed = (state, action) => {
+  return updateObject(state, {
+    loading: false,
+    groupsError: true
   });
 };
 
@@ -41,6 +50,13 @@ const successGroupMembers = (state, action) => {
   });
 };
 
+const failedGroupMembers = (state, action) => {
+  return updateObject(state, {
+    groupMembersLoading: false,
+    groupMembersError: true
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GROUPS_START:
@@ -48,6 +64,9 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.GROUPS_SUCCESS:
       return groupSuccess(state, action);
+
+    case actionTypes.GROUPS_FAILED:
+      return groupFailed(state, action);
 
     case actionTypes.SET_GROUP:
       return setGroup(state, action);
@@ -57,6 +76,9 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.SUCCESS_GROUP_MEMBERS:
       return successGroupMembers(state, action);
+
+    case actionTypes.FAILED_GROUP_MEMBERS:
+      return failedGroupMembers(state, action);
 
     default:
       return state;
