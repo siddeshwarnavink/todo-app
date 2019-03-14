@@ -60,12 +60,13 @@ class ViewTask extends Component {
               <i className="material-icons">group</i>
               Members
             </Tab>
-            {this.props.isAdmin && (
-              <Tab>
-                <i className="material-icons">edit</i>
-                Edit
-              </Tab>
-            )}
+            {this.props.isAdmin ||
+              (this.props.task.creator.id === this.props.loggedInID && (
+                <Tab>
+                  <i className="material-icons">edit</i>
+                  Edit
+                </Tab>
+              ))}
           </TabList>
           <TabPanel>
             <main className={classes.Main}>
@@ -85,21 +86,22 @@ class ViewTask extends Component {
               />
             </main>
           </TabPanel>
-          {this.props.isAdmin && (
-            <TabPanel>
-              <main className={classes.Main}>
-                {this.props.task.members && (
-                  <EditTask
-                    groupId={this.props.task.group.id}
-                    goFunc={this.props.history.push}
-                    taskId={taskId}
-                    taskData={this.props.task}
-                    taskMembers={this.props.task.members.map(m => m.user.id)}
-                  />
-                )}
-              </main>
-            </TabPanel>
-          )}
+          {this.props.isAdmin ||
+            (this.props.task.creator.id === this.props.loggedInID && (
+              <TabPanel>
+                <main className={classes.Main}>
+                  {this.props.task.members && (
+                    <EditTask
+                      groupId={this.props.task.group.id}
+                      goFunc={this.props.history.push}
+                      taskId={taskId}
+                      taskData={this.props.task}
+                      taskMembers={this.props.task.members.map(m => m.user.id)}
+                    />
+                  )}
+                </main>
+              </TabPanel>
+            ))}
         </Tabs>
       </>
     ) : (
@@ -113,7 +115,8 @@ const mapStateToProps = state => ({
   task: state.tasks.task,
   taskMembersLoading: state.tasks.taskMembersLoading,
   taskMembers: state.tasks.taskMembers,
-  isAdmin: state.auth.user.isAdmin
+  isAdmin: state.auth.user.isAdmin,
+  loggedInID: state.auth.user.id
 });
 
 const mapDispatchToProps = dispatch => ({
