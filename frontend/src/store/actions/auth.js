@@ -55,42 +55,41 @@ export const isLoggedIn = () => dispatch => {
     });
 };
 
-export const auth = (email, password) => async dispatch => {
-  dispatch(authStart());
+export const auth = (email, password) => async (dispatch, getState) => {
+  if (!getState().auth.isLoggedIn) {
+    dispatch(authStart());
 
-  axios
-    .post(
-      "/",
-      JSON.stringify({
-        query: `
+    axios
+      .post(
+        "/",
+        JSON.stringify({
+          query: `
           {
             login(email: "${email}", password: "${password}") {
               token
             }
           }
         `
+        })
+      )
+      .then(({ data }) => {
+        localStorage.setItem("token", data.data.login.token);
+
+        dispatch(isLoggedIn());
+
+        dispatch(
+          actions.notify({
+            message: "Loggedin Successfully!"
+          })
+        );
       })
-    )
-    .then(({ data }) => {
-      localStorage.setItem("token", data.data.login.token);
-
-      dispatch(isLoggedIn());
-
-      dispatch(
+      .catch(err => {
+        dispatch(authFail());
         actions.notify({
-          message: "Loggedin Successfully!"
-        })
-      );
-    })
-    .catch(err => {
-      dispatch(authFail());
-
-      dispatch(
-        actions.notify({
-          message: "Enter a valid input"
-        })
-      );
-    });
+          message: "Enter valid credentials"
+        });
+      });
+  }
 };
 
 export const logout = goFunc => dispatch => {
