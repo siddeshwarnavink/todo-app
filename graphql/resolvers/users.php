@@ -46,6 +46,7 @@ return [
 
         DB::table('user_group')->where('userid', $args['id'])->delete();
         DB::table('task_user')->where('user_id', $args['id'])->delete();
+        DB::table('notifications')->where('user_id', $args['id'])->delete();
 
         return true;
     }
