@@ -69,6 +69,10 @@ export const group = groupId => dispatch => {
     .then(({ data }) => {
       dispatch(groupSuccess([]));
       dispatch(setGroup(data.data.group));
+    })
+    .catch(() => {
+      alert("Group failed to load / does not exist!");
+      window.location.assign("/");
     });
 };
 

@@ -99,6 +99,7 @@ return [
     },
 
     'completeTask' => function($root, $args) {
+        
         $taskRelation = DB::table('task_user')
                         ->where('task_id', $args['taskId'])
                         ->where('user_id', $root['isAuth']->user->id)
@@ -107,6 +108,10 @@ return [
         DB::table('task_user')
             ->where('id', $taskRelation->id)
             ->update(['completed' => 1]);
+
+        $taskCreator = Task::where('id', $args['taskId'])->first()->creator;
+
+        notify('done', $root['isAuth']->user->username . ' has completed assigned task!', "/task/{$args['taskId']}" , $taskCreator);
 
         return true;
     },

@@ -98,6 +98,10 @@ export const initTask = taskId => dispatch => {
     )
     .then(({ data }) => {
       dispatch(taskSuccess(data.data.task));
+    })
+    .catch(() => {
+      alert("Task failed to load / does not exist!");
+      window.location.assign("/");
     });
 };
 
