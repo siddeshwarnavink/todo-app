@@ -67,7 +67,11 @@ class ViewUser extends Component {
               notifyFunc={this.props.notify}
               pushFunc={this.props.history.push}
               reAuthFunc={this.props.reAuth}
-              userId={this.props.match.params.id}
+              userId={
+                this.props.match.params.id === "current-user"
+                  ? this.props.currentUser.id
+                  : this.props.match.params.id
+              }
               currentUser={this.props.user}
               isAdmin={this.props.currentUser.isAdmin}
             />
