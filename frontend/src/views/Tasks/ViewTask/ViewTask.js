@@ -20,6 +20,8 @@ class ViewTask extends Component {
     props.initTask(props.match.params.id);
   }
   render() {
+    console.log(this.props.isAdmin);
+
     const taskId = this.props.match.params.id;
 
     return !this.props.taskLoading && this.props.task.creator ? (
@@ -61,12 +63,12 @@ class ViewTask extends Component {
               Members
             </Tab>
             {this.props.isAdmin ||
-              (this.props.task.creator.id === this.props.loggedInID && (
-                <Tab>
-                  <i className="material-icons">edit</i>
-                  Edit
-                </Tab>
-              ))}
+            this.props.task.creator.id === this.props.loggedInID ? (
+              <Tab>
+                <i className="material-icons">edit</i>
+                Edit
+              </Tab>
+            ) : null}
           </TabList>
           <TabPanel>
             <main className={classes.Main}>
@@ -87,21 +89,21 @@ class ViewTask extends Component {
             </main>
           </TabPanel>
           {this.props.isAdmin ||
-            (this.props.task.creator.id === this.props.loggedInID && (
-              <TabPanel>
-                <main className={classes.Main}>
-                  {this.props.task.members && (
-                    <EditTask
-                      groupId={this.props.task.group.id}
-                      goFunc={this.props.history.push}
-                      taskId={taskId}
-                      taskData={this.props.task}
-                      taskMembers={this.props.task.members.map(m => m.user.id)}
-                    />
-                  )}
-                </main>
-              </TabPanel>
-            ))}
+          this.props.task.creator.id === this.props.loggedInID ? (
+            <TabPanel>
+              <main className={classes.Main}>
+                {this.props.task.members && (
+                  <EditTask
+                    groupId={this.props.task.group.id}
+                    goFunc={this.props.history.push}
+                    taskId={taskId}
+                    taskData={this.props.task}
+                    taskMembers={this.props.task.members.map(m => m.user.id)}
+                  />
+                )}
+              </main>
+            </TabPanel>
+          ) : null}
         </Tabs>
       </>
     ) : (

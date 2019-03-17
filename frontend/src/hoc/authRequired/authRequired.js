@@ -9,7 +9,7 @@ import Backdrop from "../../components/UI/Backdrop/Backdrop";
 const authRequired = WrapperComponent => {
   class InnerComponent extends Component {
     componentDidMount() {
-      this.props.autoLogin();
+      if (!this.props.isLoggedIn) this.props.autoLogin();
 
       if (!localStorage.getItem("token") && !this.props.isLoggedIn) {
         this.props.history.push("/auth");

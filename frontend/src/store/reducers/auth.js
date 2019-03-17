@@ -38,7 +38,7 @@ const authLogout = (state, action) => {
     token: "",
     isLoggedIn: false,
     user: {}
-  })
+  });
 };
 
 const reducer = (state = initialState, action) => {

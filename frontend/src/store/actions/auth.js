@@ -25,11 +25,11 @@ const authLogout = () => ({
 export const isLoggedIn = () => dispatch => {
   axios
     .post(
-      "/",
+      `/?token=${localStorage.getItem("token")}`,
       JSON.stringify({
         query: `
         {
-          validToken(token: "${localStorage.getItem("token")}") {
+          validToken: validToken(token: "${localStorage.getItem("token")}") {
             newToken,
             user {
               id,
@@ -37,39 +37,21 @@ export const isLoggedIn = () => dispatch => {
               company
             }
           }
+
+          companyStaics: companyStaics {
+            logo
+          }
         }
       `
       })
     )
     .then(({ data }) => {
       dispatch(
-        authSuccess(data.data.validToken.newToken, data.data.validToken.user)
+        authSuccess(data.data.validToken.newToken, {
+          ...data.data.validToken.user,
+          logo: data.data.companyStaics.logo
+        })
       );
-
-      return data.data.validToken;
-    })
-    .then(authData => {
-      axios
-        .post(
-          `/?token=${localStorage.getItem("token")}`,
-          JSON.stringify({
-            query: `
-            {
-              companyStaics {
-                logo
-              }
-            }
-          `
-          })
-        )
-        .then(({ data }) => {
-          dispatch(
-            authSuccess(authData.newToken, {
-              ...authData.user,
-              logo: data.data.companyStaics.logo
-            })
-          );
-        });
     });
 };
 
