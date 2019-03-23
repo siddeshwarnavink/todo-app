@@ -32,7 +32,7 @@ class Layout extends Component {
               this.setState({ notificationCount: data.data.notificationCount });
             }
           });
-      }, 2000);
+      }, 3500);
     }
   }
 
