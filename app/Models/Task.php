@@ -57,8 +57,6 @@ class Task extends Model
 
     public function isCompleted($userId)
     {
-        if(User::find($userId)->isAdmin) return true;
-
         return (bool) DB::table('task_user')
         ->where('task_id', $this->id)
         ->where('user_id', $userId)
