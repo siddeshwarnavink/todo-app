@@ -191,9 +191,15 @@ export const editTask = (task, taskId, goFunc) => dispatch => {
           mutation {
             editTask(id: ${taskId}, title: "${task.title}", description: "${
           task.description
-        }", starts_at: "${task.starts_at}", ends_at: "${
-          task.ends_at
-        }", groupId: ${task.groupId}, members: "[${task.members}]")
+        }", starts_at: "${new Date(task.starts_at)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ")}", ends_at: "${new Date(task.ends_at)
+          .toISOString()
+          .slice(0, 19)
+          .replace("T", " ")}", groupId: ${task.groupId}, members: "[${
+          task.members
+        }]")
           }
         `
       })
@@ -223,7 +229,7 @@ export const initTasks = () => dispatch => {
             title
             description
           }
-        }        
+        }
         `
       })
     )
