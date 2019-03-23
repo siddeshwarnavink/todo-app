@@ -71,7 +71,8 @@ const Input = props => {
               className: inputClasses.join("  "),
               onKeyDown: e => e.preventDefault()
             }}
-            value={props.value}
+            input={false}
+            defaultValue={props.value}
             onChange={e => {
               props.changed({
                 target: {
