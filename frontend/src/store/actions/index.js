@@ -5,7 +5,14 @@ export { auth, isLoggedIn, logout } from "./auth";
 export { notify } from "./flashNotify";
 
 // Groups
-export { initGroups, group, groupMembers } from "./group";
+export {
+  initGroups,
+  group,
+  groupMembers,
+  addGroup,
+  editGroup,
+  deleteGroup
+} from "./group";
 
 // Tasks
 export {

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
+import * as actions from "../../../store/actions";
 import checkValidation from "../../../utility/checkValidation";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
-import axios from "../../../axios";
 
 const AddGroup = props => {
   const [formData, setFormData] = useState({
@@ -80,23 +81,15 @@ const AddGroup = props => {
   const submitHandler = event => {
     event.preventDefault();
     if (formIsValid) {
-      axios
-        .post(
-          `/?token=${localStorage.getItem("token")}`,
-          JSON.stringify({
-            query: `
-            mutation {
-                addGroup(title: "${formData.title.value}", description: "${
-              formData.description.value
-            }", members:"[${formData.members.value}]") 
-            }
-        `
-          })
-        )
-        .then(() => {
+      props.onCreateGroup(
+        formData.title.value,
+        formData.description.value,
+        formData.members.value,
+        () => {
           props.loadGroups();
           props.modalClose();
-        });
+        }
+      );
     }
   };
 
@@ -126,13 +119,28 @@ const AddGroup = props => {
     <div>
       <form onSubmit={submitHandler}>
         <h1>Add Group</h1>
-        {form}
-        <Button disabled={!formIsValid} btnType="Primary">
-          SUBMIT
-        </Button>
+        {!props.groupLoading && (
+          <>
+            {form}
+            <Button disabled={!formIsValid} btnType="Primary">
+              SUBMIT
+            </Button>
+          </>
+        )}
       </form>
     </div>
   );
 };
 
-export default AddGroup;
+const mapStateToProps = state => ({
+  groupLoading: state.groups.loading
+});
+
+const mapDispatchToProps = dispatch => ({
+  onCreateGroup: (...args) => dispatch(actions.addGroup(...args))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddGroup);

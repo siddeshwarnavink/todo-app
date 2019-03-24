@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import checkValidation from "../../../utility/checkValidation";
 import Input from "../../UI/Input/Input";
 import Button from "../../UI/Button/Button";
-import axios from "../../../axios";
 import * as actions from "../../../store/actions";
 import { connect } from "react-redux";
 
@@ -81,24 +80,15 @@ const EditGroup = props => {
   const submitHandler = event => {
     event.preventDefault();
     if (formIsValid) {
-      axios
-        .post(
-          `/?token=${localStorage.getItem("token")}`,
-          JSON.stringify({
-            query: `
-            mutation {
-              editGroup(id: ${props.groupId}, title: "${
-              formData.title.value
-            }", description: "${formData.description.value}"
-            members: "[${formData.members.value}]")
-            }
-        `
-          })
-        )
-        .then(() => {
+      props.onEditGroup(
+        props.groupId,
+        formData.title.value,
+        formData.description.value,
+        formData.members.value,
+        () => {
           props.initPage();
-          props.notify("Group Updated Successfully");
-        });
+        }
+      );
     }
   };
 
@@ -108,21 +98,10 @@ const EditGroup = props => {
     );
 
     if (verify) {
-      axios
-        .post(
-          `/?token=${localStorage.getItem("token")}`,
-          JSON.stringify({
-            query: `
-              mutation {
-                deleteGroup(id: ${props.groupId})
-              }
-            `
-          })
-        )
-        .then(() => {
-          alert("Group Deleted!");
-          window.location.assign("/");
-        });
+      props.onDeleteGroup(props.groupId, () => {
+        alert("Group Deleted!");
+        window.location.assign("/");
+      });
     }
   };
 
@@ -152,24 +131,33 @@ const EditGroup = props => {
     <div>
       <form onSubmit={submitHandler}>
         <h1>Edit Group</h1>
-        {form}
-        <Button disabled={!formIsValid} btnType="Primary">
-          SUBMIT
-        </Button>
+        {!props.groupLoading && (
+          <>
+            {form}
+            <Button disabled={!formIsValid} btnType="Primary">
+              SUBMIT
+            </Button>
 
-        <Button type="button" btnType="Danger" clicked={deleteGroup}>
-          DELETE GROUP
-        </Button>
+            <Button type="button" btnType="Danger" clicked={deleteGroup}>
+              DELETE GROUP
+            </Button>
+          </>
+        )}
       </form>
     </div>
   );
 };
 
+const mapStateToProps = state => ({
+  groupLoading: state.groups.loading
+});
+
 const mapDispatchToProps = dispatch => ({
-  notify: message => dispatch(actions.notify({ message }))
+  onEditGroup: (...args) => dispatch(actions.editGroup(...args)),
+  onDeleteGroup: (...args) => dispatch(actions.deleteGroup(...args))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(EditGroup);

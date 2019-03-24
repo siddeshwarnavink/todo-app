@@ -110,3 +110,75 @@ export const groupMembers = groupId => dispatch => {
       window.location.assign("/");
     });
 };
+
+export const addGroup = (
+  title,
+  description,
+  members,
+  cb = () => {}
+) => dispatch => {
+  dispatch(groupStart());
+  axios
+    .post(
+      `/?token=${localStorage.getItem("token")}`,
+      JSON.stringify({
+        query: `
+        mutation {
+            addGroup(title: "${title}", description: "${description}", members:"[${members}]")
+        }
+    `
+      })
+    )
+    .then(() => {
+      dispatch(groupSuccess());
+      cb();
+    });
+};
+
+export const editGroup = (
+  id,
+  title,
+  description,
+  members,
+  cb = () => {}
+) => dispatch => {
+  dispatch(groupStart());
+  axios
+    .post(
+      `/?token=${localStorage.getItem("token")}`,
+      JSON.stringify({
+        query: `
+        mutation {
+          editGroup(id: ${id}, title: "${title}", description: "${description}"
+        members: "[${members}]")
+        }
+    `
+      })
+    )
+    .then(() => {
+      dispatch(groupSuccess());
+      dispatch(
+        actions.notify({
+          message: "Group Updated Successfully"
+        })
+      );
+      cb();
+    });
+};
+
+export const deleteGroup = (id, cb = () => {}) => () => {
+  axios
+    .post(
+      `/?token=${localStorage.getItem("token")}`,
+      JSON.stringify({
+        query: `
+          mutation {
+            deleteGroup(id: ${id})
+          }
+        `
+      })
+    )
+    .then(() => {
+      cb();
+    });
+};
