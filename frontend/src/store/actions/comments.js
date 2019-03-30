@@ -35,7 +35,7 @@ export const initComments = (type, payload) => dispatch => {
       JSON.stringify({
         query: `
           {
-              comments(type: "task", payload: 12) {
+              comments(type: "${type}", payload: ${payload}) {
                 message
                 creator {
                   id
@@ -69,7 +69,7 @@ export const postComment = (message, type, payload) => (dispatch, getState) => {
         `
       })
     )
-    .then((data) => {
+    .then(data => {
       console.log(data);
       dispatch(
         addComment({
