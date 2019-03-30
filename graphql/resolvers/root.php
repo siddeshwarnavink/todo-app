@@ -6,6 +6,7 @@ $taskResolvers = require('./graphql/resolvers/tasks.php');
 $userResolvers = require('./graphql/resolvers/users.php');
 $companyResolvers = require('./graphql/resolvers/company.php');
 $notificationResolver = require('./graphql/resolvers/notifications.php');
+$commentsResolver = require('./graphql/resolvers/comments.php');
 
 $Resolvers = array_merge(
     $authResolvers,
@@ -13,7 +14,8 @@ $Resolvers = array_merge(
     $taskResolvers,
     $userResolvers,
     $companyResolvers,
-    $notificationResolver
+    $notificationResolver,
+    $commentsResolver
 );
 
 return $Resolvers;

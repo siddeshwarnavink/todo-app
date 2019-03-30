@@ -6,7 +6,7 @@ return [
     'notifications' => function ($root, $args) {
         AuthRequired($root);
 
-        return Notification::where('user_id', $root['isAuth']->user->id)->get();
+        return Notification::where('user_id', $root['isAuth']->user->id)->orderBy('created_at', 'DESC')->get();
     },
 
     'clearNotifications' => function ($root, $args) {

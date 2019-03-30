@@ -18,8 +18,9 @@ import flashNotifyReducer from "./store/reducers/flashNotify";
 import authReducer from "./store/reducers/auth";
 import groupsReducer from "./store/reducers/groups";
 import tasksReducer from "./store/reducers/tasks";
-import NotificationReducer from "./store/reducers/notifications";
-import UsersReducer from "./store/reducers/users";
+import commentsReducer from "./store/reducers/comments";
+import notificationReducer from "./store/reducers/notifications";
+import usersReducer from "./store/reducers/users";
 
 const composeEnhancers =
   process.env.NODE_ENV === "development"
@@ -31,8 +32,9 @@ const rootReducers = combineReducers({
   flashNotify: flashNotifyReducer,
   groups: groupsReducer,
   tasks: tasksReducer,
-  notification: NotificationReducer,
-  users: UsersReducer
+  notification: notificationReducer,
+  users: usersReducer,
+  comments: commentsReducer
 });
 
 const store = createStore(

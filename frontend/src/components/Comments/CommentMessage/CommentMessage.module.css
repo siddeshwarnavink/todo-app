@@ -1,0 +1,33 @@
+.CommentMessage {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.CommentMessage::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.CommentMessage.Darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.CommentMessage .TimeRight {
+  float: right;
+  color: #aaa;
+}
+
+.CommentMessage .TimeLeft {
+  float: left;
+  color: #999;
+}
+
+.CommentMessage a.Link {
+  color: #8080ff;
+  font-weight: bold;
+}

@@ -53,7 +53,7 @@ return [
 
     'groupTask' => function($root, $args) {
         AuthRequired($root);
-        
+
         $tasks = [];
 
         if($root['isAuth']->user->isAdmin) {
@@ -70,8 +70,8 @@ return [
 
             $tasks = array_merge($tasks, $raw_tasks);
         }
-        
-        
+
+
         $transformedTasks = [];
 
         foreach($tasks as $task) {
@@ -99,7 +99,7 @@ return [
     },
 
     'completeTask' => function($root, $args) {
-        
+
         $taskRelation = DB::table('task_user')
                         ->where('task_id', $args['taskId'])
                         ->where('user_id', $root['isAuth']->user->id)
@@ -118,7 +118,7 @@ return [
 
     'editTask' => function($root, $args) {
         AuthRequired($root);
-        
+
         $taskData = [
             'title' => $args['title'],
             'description' => $args['description'],
@@ -141,7 +141,7 @@ return [
 
         $task = Task::where('id', $args['id']);
         $task->update($taskData);
-        
+
         $currentTaskMembers = taskMember($args['id']);
 
         $insertList = [];
@@ -199,7 +199,7 @@ return [
         foreach($relationTasks as $relationTask) {
             $raw_tasks = Task::where('id', $relationTask->task_id)->get();
             $newTasks = [];
-            
+
             foreach($raw_tasks as $key => $task) {
                 $newTasks[] = transformTask($raw_tasks[$key], $root['isAuth']->user->id);
             }

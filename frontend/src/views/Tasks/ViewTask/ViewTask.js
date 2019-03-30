@@ -12,6 +12,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
 import TaskMembers from "./TaskMembers/TaskMembers";
 import EditTask from "../../../components/Tasks/EditTask/EditTask";
+import Comments from "../../../components/Comments/Comments";
 
 class ViewTask extends Component {
   constructor(props) {
@@ -19,9 +20,8 @@ class ViewTask extends Component {
 
     props.initTask(props.match.params.id);
   }
-  render() {
-    console.log(this.props.isAdmin);
 
+  render() {
     const taskId = this.props.match.params.id;
 
     return !this.props.taskLoading && this.props.task.creator ? (
@@ -78,6 +78,8 @@ class ViewTask extends Component {
                 From {new Date(this.props.task.starts_at).toDateString()} to{" "}
                 {new Date(this.props.task.ends_at).toDateString()}
               </span>
+
+              <Comments type="task" payload={parseInt(taskId)} />
             </main>
           </TabPanel>
           <TabPanel>

@@ -28,3 +28,5 @@ export {
 export { initNotifications, onClearNotifications } from "./notifications";
 
 export { initUser } from "./users";
+
+export { initComments, postComment } from "./comments";

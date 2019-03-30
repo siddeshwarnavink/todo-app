@@ -1,0 +1,13 @@
+.PostButton {
+    padding: 12px 16px;
+    background-color: #8080ff;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.PostButton:disabled {
+    background-color: #a9a9ff;
+}

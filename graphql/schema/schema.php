@@ -21,7 +21,7 @@ function taskMember($id) {
     foreach($currentTaskMembers as $key => $memberId) {
         $currentTaskMembers_array[$key] = $memberId;
     }
-    
+
     return $currentTaskMembers_array;
 }
 
@@ -41,11 +41,11 @@ function transformTask($task, $userId) {
         $task['group'] = $task['groupId'];
     }
     unset($task['groupId']);
-    
+
     $task['members'] = $task->members();
     $task['completed'] = $task->isCompleted($userId);
     $task['taskDone'] = $task->isDone();
-    
+
     return $task;
 }
 
@@ -65,6 +65,12 @@ function transformCompany($company) {
     $company['groups'] = $groups;
 
     return $company;
+}
+
+function transformComment($comment)  {
+  $returnComment = (array) $comment;
+  $returnComment['creator'] = User::find($comment->user_id);
+  return $returnComment;
 }
 
 function notify($icon, $content, $link, $userId) {
