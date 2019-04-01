@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Backdrop from "../Backdrop/Backdrop";
+import { isBrowser } from "react-device-detect";
+import Button from '../Button/Button'
 
 import classes from "./Modal.module.css";
 
@@ -20,10 +22,13 @@ class Modal extends Component {
           style={{
             transform: this.props.show ? "translateY(0)" : "translateY(-100vh)",
             opacity: this.props.show ? "1" : "0",
-            height: `${this.props.size * 10}%`,
+            height: isBrowser && `${this.props.size * 10}%`,
             overflowY: this.props.scroll ? "scroll" : "hidden"
           }}
         >
+          <span style={{ float: 'right' }}>
+          <Button btnType="Secondary" clicked={this.props.modalClosed}>Close</Button>
+          </span>
           {this.props.children}
         </div>
       </>

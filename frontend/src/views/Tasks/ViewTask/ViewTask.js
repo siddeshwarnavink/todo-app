@@ -7,12 +7,14 @@ import authRequired from "../../../hoc/authRequired/authRequired";
 
 import { Link } from "react-router-dom";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+import { BrowserView, MobileView } from "react-device-detect";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
 import TaskMembers from "./TaskMembers/TaskMembers";
 import EditTask from "../../../components/Tasks/EditTask/EditTask";
 import Comments from "../../../components/Comments/Comments";
+import MobileJumbotron from "../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
 
 class ViewTask extends Component {
   constructor(props) {
@@ -26,47 +28,56 @@ class ViewTask extends Component {
 
     return !this.props.taskLoading && this.props.task.creator ? (
       <>
-        <Jumbotron>
-          <h1>{this.props.task.title}</h1>
-          <sub>
-            Task created by{" "}
-            <Link
-              to={`/user/${this.props.task.creator.id}`}
-              style={{ color: "#8080ff" }}
-            >
-              {this.props.task.creator.username}
-            </Link>
-          </sub>
-          {!this.props.task.taskDone ? (
-            <Button
-              btnType="Primary"
-              clicked={() =>
-                this.props.completeTask(taskId, this.props.history.push)
-              }
-              disabled={this.props.task.completed}
-            >
-              <i className="material-icons">done</i>
-              {this.props.task.completed ? "Completed" : "Complete Task"}
-            </Button>
-          ) : (
-            <p>This task is now closed!</p>
-          )}
-        </Jumbotron>
+        <BrowserView>
+          <Jumbotron>
+            <h1>{this.props.task.title}</h1>
+            <sub>
+              Task created by{" "}
+              <Link
+                to={`/user/${this.props.task.creator.id}`}
+                style={{ color: "#8080ff" }}
+              >
+                {this.props.task.creator.username}
+              </Link>
+            </sub>
+            {!this.props.task.taskDone ? (
+              <Button
+                btnType="Primary"
+                clicked={() =>
+                  this.props.completeTask(taskId, this.props.history.push)
+                }
+                disabled={this.props.task.completed}
+              >
+                <i className="material-icons">done</i>
+                {this.props.task.completed ? "Completed" : "Complete Task"}
+              </Button>
+            ) : (
+              <p>This task is now closed!</p>
+            )}
+          </Jumbotron>
+        </BrowserView>
+        <MobileView>
+          <MobileJumbotron
+            subtext={`Task by ${this.props.task.creator.username}`}
+          >
+            <h1>{this.props.task.title}</h1>
+          </MobileJumbotron>
+        </MobileView>
         <Tabs>
           <TabList>
             <Tab>
               <i className="material-icons">notes</i>
-              About
+              <span>About</span>
             </Tab>
             <Tab onClick={() => this.props.initTaskMembers(taskId)}>
               <i className="material-icons">group</i>
-              Members
+              <span>Members</span>
             </Tab>
             {this.props.isAdmin ||
             this.props.task.creator.id === this.props.loggedInID ? (
               <Tab>
                 <i className="material-icons">edit</i>
-                Edit
+                <span>Edit</span>
               </Tab>
             ) : null}
           </TabList>
@@ -74,6 +85,24 @@ class ViewTask extends Component {
             <main className={classes.Main}>
               <h1>About the task</h1>
               <p>{this.props.task.description}</p>
+
+              {!this.props.task.taskDone ? (
+                <Button
+                  btnType="Primary"
+                  clicked={() =>
+                    this.props.completeTask(taskId, this.props.history.push)
+                  }
+                  disabled={this.props.task.completed}
+                >
+                  <i className="material-icons">done</i>
+                  {this.props.task.completed ? "Completed" : "Complete Task"}
+                </Button>
+              ) : (
+                <p>This task is now closed!</p>
+              )}
+
+              <br />
+
               <span className={classes.Dates}>
                 From {new Date(this.props.task.starts_at).toDateString()} to{" "}
                 {new Date(this.props.task.ends_at).toDateString()}

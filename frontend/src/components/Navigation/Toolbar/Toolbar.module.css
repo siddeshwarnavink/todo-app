@@ -1,38 +1,71 @@
 .Toolbar {
-    height: 56px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 0rem 1rem;
-    background-color: #ffffff;
-    border-bottom: 1px solid #cccccc;
-    display: flex;
-    align-items: center;
-    z-index: 200000;
+  height: 56px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0rem 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #cccccc;
+  display: flex;
+  align-items: center;
+  z-index: 200000;
 }
 
 .Toolbar .Logo {
-    font-size: 21px;
+  font-size: 21px;
 }
 
 .Toolbar .Logo .LogoImg {
-    width: 5.5rem;
+  width: 5.5rem;
 }
 
 .Toolbar .Logo > a {
-    text-decoration: none;
-    color: #8080ff;
+  text-decoration: none;
+  color: #8080ff;
 }
 
 .Spacer {
-    flex: 1;
+  flex: 1;
 }
 
 .Navigation ul {
-    list-style: none;
+  list-style: none;
 }
 
 .Navigation ul li {
-    display: inline;
+  display: inline;
+}
+
+.MobileMore {
+  border: 0;
+  background-color: transparent;
+  outline: 0;
+}
+
+.MobileMore.Selected {
+  color: #8080ff;
+}
+
+.Dropdown {
+  right: 2%;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.Dropdown a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .Toolbar {
+    border: 0;
+  }
 }

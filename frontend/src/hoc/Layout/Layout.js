@@ -7,6 +7,7 @@ import axios from "../../axios";
 
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import FlasNotify from "../../components/FlashNotify/FlashNotify";
+import NotificationContext from '../../context/notification-context'
 
 class Layout extends Component {
   state = {
@@ -38,7 +39,7 @@ class Layout extends Component {
 
   render() {
     return (
-      <>
+      <NotificationContext.Provider value={this.state.notificationCount}>
         <Toolbar
           isLoggedIn={this.props.isLoggedIn}
           isAdmin={this.props.isAdmin}
@@ -53,7 +54,7 @@ class Layout extends Component {
             <FlasNotify key={i}>{message.message}</FlasNotify>
           ))}
         </div>
-      </>
+      </NotificationContext.Provider>
     );
   }
 }

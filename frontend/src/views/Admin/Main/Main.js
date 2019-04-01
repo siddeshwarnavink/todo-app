@@ -4,6 +4,7 @@ import classes from "./Main.module.css";
 import axios from "../../../axios";
 
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+import { BrowserView } from "react-device-detect";
 import authRequired from "../../../hoc/authRequired/authRequired";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import CompanyEmployees from "./CompanyEmployees/CompanyEmployees";
@@ -89,7 +90,9 @@ class Main extends Component {
                     alt="Company`s logo"
                     className={classes.Logo}
                   />
-                  <h1>{company.title}</h1>
+                  <BrowserView>
+                    <h1>{company.title}</h1>
+                  </BrowserView>
                 </div>
 
                 <div className={classes.Spacer} />
@@ -110,12 +113,12 @@ class Main extends Component {
               <TabList>
                 <Tab>
                   <i className="material-icons">group</i>
-                  Employees
+                  <span>Employees</span>
                 </Tab>
 
                 <Tab onClick={this.loadGroups}>
                   <i className="material-icons">group_work</i>
-                  Groups
+                  <span>Groups</span>
                 </Tab>
               </TabList>
 

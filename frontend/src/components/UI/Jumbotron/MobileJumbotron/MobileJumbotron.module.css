@@ -1,0 +1,19 @@
+.MobileJumbotron {
+  margin-top: 3rem;
+  padding: 10px;
+  margin-bottom: 1rem;
+}
+
+.Title {
+  font-size: 1.8rem;
+}
+
+.Title h1 {
+  margin-bottom: 0;
+}
+
+.Subtext {
+  margin-left: 1rem;
+  font-size: 1rem;
+  color: #777;
+}

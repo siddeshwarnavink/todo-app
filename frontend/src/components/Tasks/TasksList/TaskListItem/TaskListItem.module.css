@@ -1,20 +1,28 @@
 a.Link {
-    color: #000000;
-    text-decoration: none;
+  color: #000000;
+  text-decoration: none;
 }
 
 .TaskListItem > .DetailsDisplay {
-    padding: 1rem;
-    display: flex;
-    flex-flow: column;
-    border: 1px solid #cccccc;
+  padding: 1rem;
+  display: flex;
+  flex-flow: column;
+  border: 1px solid #cccccc;
 }
 
 .TaskListItem > .DetailsDisplay > .Title {
-    margin: 2px 0px;
+  margin: 2px 0px;
 }
 
 .TaskListItem > .DetailsDisplay > .Description {
-    font-size: 14px;
-    color: #777777;
+  font-size: 14px;
+  color: #777777;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .TaskListItem .DetailsDisplay {
+    border: 0;
+    border-bottom: 0.01rem solid #efefef;
+  }
 }

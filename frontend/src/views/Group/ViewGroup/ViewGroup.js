@@ -6,11 +6,13 @@ import { connect } from "react-redux";
 import authRequired from "../../../hoc/authRequired/authRequired";
 
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+import { BrowserView, MobileView } from "react-device-detect";
 import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import GroupTasks from "./GroupTasks/GroupTasks";
 import GroupMembers from "./GroupMembers/GroupMembers";
 import GroupEdit from "./GroupEdit/GroupEdit";
+import MobileJumbotron from "../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
 
 class ViewGroup extends Component {
   constructor(props) {
@@ -32,26 +34,34 @@ class ViewGroup extends Component {
       <div>
         {!this.props.groupsLoading ? (
           <>
-            <Jumbotron>
-              <h1>{this.props.group.title}</h1>
-              <sub>{this.props.group.description}</sub>
-            </Jumbotron>
+            <BrowserView>
+              <Jumbotron>
+                <h1>{this.props.group.title}</h1>
+                <sub>{this.props.group.description}</sub>
+              </Jumbotron>
+            </BrowserView>
+
+            <MobileView>
+              <MobileJumbotron subtext={this.props.group.description}>
+                <h1>{this.props.group.title}</h1>
+              </MobileJumbotron>
+            </MobileView>
 
             <Tabs>
               <TabList>
                 <Tab>
                   <i className="material-icons">notes</i>
-                  Tasks
+                  <span>Tasks</span>
                 </Tab>
                 <Tab>
                   <i className="material-icons">group</i>
-                  Members
+                  <span>Members</span>
                 </Tab>
 
                 {this.props.isAdmin && (
                   <Tab>
                     <i className="material-icons">edit</i>
-                    Edit
+                    <span>Edit</span>
                   </Tab>
                 )}
               </TabList>

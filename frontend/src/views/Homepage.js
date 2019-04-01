@@ -4,9 +4,13 @@ import { connect } from "react-redux";
 import * as actions from "../store/actions";
 import authRequired from "../hoc/authRequired/authRequired";
 
+import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+import { BrowserView, MobileView } from "react-device-detect";
 import GroupCard from "../components/Groups/GroupCard/GroupCard";
 import Spinner from "../components/UI/Spinner/Spinner";
 import TasksList from "../components/Tasks/TasksList/TasksList";
+import MobileJumbotron from "../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
+import Notificatons from "./Notification/Notification";
 
 class Homepage extends Component {
   constructor(props) {
@@ -17,6 +21,13 @@ class Homepage extends Component {
   }
 
   render() {
+    let hrs = new Date().getHours();
+    let greet;
+
+    if (hrs < 12) greet = "Good Morning";
+    else if (hrs >= 12 && hrs <= 17) greet = "Good Afternoon";
+    else if (hrs >= 17 && hrs <= 24) greet = "Good Evening";
+
     let groups = this.props.groupsError ? (
       <p>Failed to load the groups</p>
     ) : (
@@ -39,16 +50,54 @@ class Homepage extends Component {
     }
 
     return (
-      <main>
-        <h1>Tasks</h1>
-        {!this.props.tasksLoading ? (
-          <TasksList tasks={this.props.tasks} />
-        ) : (
-          <Spinner />
-        )}
-        <h1>Groups</h1>
-        {groups}
-      </main>
+      <>
+        <BrowserView>
+          <main>
+            <h1>Tasks</h1>
+            {!this.props.tasksLoading ? (
+              <TasksList tasks={this.props.tasks} />
+            ) : (
+              <Spinner />
+            )}
+            <h1>Groups</h1>
+            {groups}
+          </main>
+        </BrowserView>
+        <MobileView>
+          <MobileJumbotron subtext={new Date().toDateString()}>
+            <h1>{greet}</h1>
+          </MobileJumbotron>
+
+          <Tabs>
+            <TabList>
+              <Tab>
+                <i className="material-icons">notes</i>
+                <span>Tasks</span>
+              </Tab>
+              <Tab>
+                <i className="material-icons">group</i>
+                <span>Groups</span>
+              </Tab>
+              <Tab>
+                <i className="material-icons">notifications_none</i>
+                <span>Notification</span>
+              </Tab>
+            </TabList>
+            <TabPanel>
+              {!this.props.tasksLoading ? (
+                <TasksList tasks={this.props.tasks} />
+              ) : (
+                <Spinner />
+              )}
+            </TabPanel>
+            <TabPanel>{groups}</TabPanel>
+
+            <TabPanel>
+              <Notificatons />
+            </TabPanel>
+          </Tabs>
+        </MobileView>
+      </>
     );
   }
 }

@@ -1,44 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
-
-import classes from "./Toolbar.module.css";
+import { BrowserView, MobileView } from "react-device-detect";
 import NavigationItem from "./NavigationItem/NavigationItem";
+import NotificationContext from "../../../context/notification-context";
+import classNames from "classnames";
+import classes from "./Toolbar.module.css";
 
-const Toolbar = props => (
-  <header className={classes.Toolbar}>
-    <div className={classes.Logo}>
-      <Link to="/">
-        {props.logo ? (
-          <img src={props.logo} className={classes.LogoImg} alt="Logo" />
-        ) : (
-          <>Siddeshrocks Todo</>
-        )}
-      </Link>
-    </div>
+const Toolbar = props => {
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
 
-    <div className={classes.Spacer} />
+  return (
+    <header className={classes.Toolbar}>
+      <div className={classes.Logo}>
+        <Link to="/">
+          {props.logo ? (
+            <img src={props.logo} className={classes.LogoImg} alt="Logo" />
+          ) : (
+            <>Siddeshrocks Todo</>
+          )}
+        </Link>
+      </div>
 
-    <div className={classes.Navigation}>
-      <ul>
-        {props.isLoggedIn && (
-          <>
-            <NavigationItem to="/notification" badge={props.notificationCount}>
-              <i className="material-icons">notifications_none</i>
-            </NavigationItem>
-            <NavigationItem to="/profile">
-              <i className="material-icons">person</i>
-            </NavigationItem>
-          </>
-        )}
-        {props.isAdmin && (
-          <NavigationItem to="/admin" selected>
-            <i className="material-icons">security</i>
-          </NavigationItem>
-        )}
-      </ul>
-    </div>
-  </header>
-);
+      <div className={classes.Spacer} />
+
+      <div className={classes.Navigation}>
+        <ul>
+          <MobileView>
+            {props.isLoggedIn && (
+              <>
+                <button
+                  className={classNames(classes.MobileMore, {
+                    [classes.Selected]: isMoreOpen
+                  })}
+                  onClick={() => setIsMoreOpen(!isMoreOpen)}
+                >
+                  <i className="material-icons">
+                    {isMoreOpen ? "close" : "more_vert"}
+                  </i>
+                </button>
+
+                {isMoreOpen && (
+                  <div
+                    className={classes.Dropdown}
+                    onClick={() => setIsMoreOpen(false)}
+                  >
+                    <Link to="/profile">
+                      <i className="material-icons">person</i>
+                      Profile
+                    </Link>
+                    {props.isAdmin && (
+                      <Link to="/admin" selected>
+                        <i className="material-icons">security</i>
+                        Admin Area
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </MobileView>
+          <BrowserView>
+            {props.isLoggedIn && (
+              <>
+                <NotificationContext.Consumer>
+                  {value => {
+                    return (
+                      <NavigationItem
+                        to="/notification"
+                        badge={props.notificationCount}
+                      >
+                        <i className="material-icons">notifications_none</i>
+                      </NavigationItem>
+                    );
+                  }}
+                </NotificationContext.Consumer>
+                <NavigationItem to="/profile">
+                  <i className="material-icons">person</i>
+                </NavigationItem>
+              </>
+            )}
+            {props.isAdmin && (
+              <NavigationItem to="/admin" selected>
+                <i className="material-icons">security</i>
+              </NavigationItem>
+            )}
+          </BrowserView>
+        </ul>
+      </div>
+    </header>
+  );
+};
 
 export default Toolbar;

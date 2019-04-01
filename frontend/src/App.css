@@ -13,6 +13,7 @@ main {
   background-color: #cccccc;
   list-style: none;
   margin: 0;
+  z-index: 9999999999;
   padding: 0 2rem;
   overflow: hidden;
 }
@@ -316,8 +317,54 @@ td.rdtYear:hover {
   cursor: default;
 }
 
+/* Mobile */
 @media (max-width: 600px) {
+  main h1 {font-size: 21px;}
+
+  .search-input > input {
+    border: 0;
+    margin: 5px 0px;
+  }
+
   .rdtOpen .rdtPicker {
     margin: auto;
+  }
+
+  .react-tabs__tab-list {
+    max-height: 75px;
+    margin: auto;
+    text-align: center;
+    box-sizing: 0 0 0 1 10px #efefef;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+  }
+
+  .react-tabs__tab--selected {
+    color: #8080ff;
+    border: 0;
+    font-weight: 1000;
+  }
+
+  .react-tabs__tab:first-child {
+    margin-left: 5%;
+  }
+
+  .react-tabs__tab:last-child {
+    margin: 0;
+  }
+
+  .react-tabs__tab i {
+    text-align: center;
+    display: block;
+    padding-top: 6px;
+  }
+
+  .react-tabs__tab span {
+    font-size: 0.8rem;
   }
 }
