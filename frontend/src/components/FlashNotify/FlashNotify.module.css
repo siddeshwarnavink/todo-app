@@ -21,6 +21,14 @@
     padding: 1rem 2rem;
 }
 
+
+/* Mobile */
+@media (max-width: 600px) {
+    .FlashMessage {
+        margin-bottom: 2rem;
+    }
+}
+
 @-webkit-keyframes animatebottom {
     from {
         bottom:-300px;
