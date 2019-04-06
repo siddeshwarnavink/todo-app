@@ -11,6 +11,7 @@ import Spinner from "../components/UI/Spinner/Spinner";
 import TasksList from "../components/Tasks/TasksList/TasksList";
 import MobileJumbotron from "../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
 import Notificatons from "./Notification/Notification";
+import NotificationContext from "../context/notification-context";
 
 class Homepage extends Component {
   constructor(props) {
@@ -79,8 +80,18 @@ class Homepage extends Component {
                 <span>Groups</span>
               </Tab>
               <Tab>
-                <i className="material-icons">notifications_none</i>
-                <span>Notification</span>
+                <NotificationContext.Consumer>
+                  {notificationCount => (
+                    <>
+                      <i className="material-icons">
+                        {notificationCount === 0
+                          ? "notifications_none"
+                          : "notifications_active"}
+                      </i>
+                      <span>Notification</span>
+                    </>
+                  )}
+                </NotificationContext.Consumer>
               </Tab>
             </TabList>
             <TabPanel>
