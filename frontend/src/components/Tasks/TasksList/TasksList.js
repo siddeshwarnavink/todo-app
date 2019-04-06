@@ -4,7 +4,6 @@ import classes from "./TasksList.module.css";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 
-import { TransitionGroup } from "react-transition-group";
 import SearchInput, { createFilter } from "react-search-input";
 import TaskListItem from "./TaskListItem/TaskListItem";
 
@@ -27,7 +26,7 @@ class TasksList extends Component {
         <SearchInput onChange={this.searchUpdated} className="search-input" />
 
         {filteredTasks.length > 0 ? (
-          <TransitionGroup component="ul" className={classes.TasksList}>
+          <ul className={classes.TasksList}>
             {filteredTasks.map(task => (
               <TaskListItem
                 key={task.id}
@@ -38,7 +37,7 @@ class TasksList extends Component {
                 completeTask={() => this.props.completedTask(task.id)}
               />
             ))}
-          </TransitionGroup>
+          </ul>
         ) : (
           <p>No tasks :-)</p>
         )}
