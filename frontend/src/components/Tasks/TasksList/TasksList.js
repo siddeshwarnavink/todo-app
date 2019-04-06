@@ -21,8 +21,6 @@ class TasksList extends Component {
       createFilter(this.state.searchTerm, ["title", "description"])
     );
 
-    console.log(this.props);
-
     return (
       <div>
         <SearchInput onChange={this.searchUpdated} className="search-input" />

@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { Link } from "react-router-dom";
 import { BrowserView, MobileView } from "react-device-detect";
 import NavigationItem from "./NavigationItem/NavigationItem";
 import NotificationContext from "../../../context/notification-context";
+import MenuContext from "../../../context/menu-context";
 import classNames from "classnames";
 import classes from "./Toolbar.module.css";
 
 const Toolbar = props => {
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const menuContext = useContext(MenuContext);
 
   return (
     <header className={classes.Toolbar}>
@@ -45,16 +47,16 @@ const Toolbar = props => {
                     className={classes.Dropdown}
                     onClick={() => setIsMoreOpen(false)}
                   >
-                    <Link to="/profile">
-                      <i className="material-icons">person</i>
-                      Profile
-                    </Link>
-                    {props.isAdmin && (
-                      <Link to="/admin" selected>
-                        <i className="material-icons">security</i>
-                        Admin Area
+                    {menuContext.menuItems.map((menuItem, index) => (
+                      <Link
+                        to={menuItem.to}
+                        key={index}
+                        onClick={menuItem ? menuItem.clicked : () => {}}
+                      >
+                        <i className="material-icons">{menuItem.icon}</i>
+                        {menuItem.label}
                       </Link>
-                    )}
+                    ))}
                   </div>
                 )}
               </>

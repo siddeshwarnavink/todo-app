@@ -15,13 +15,46 @@ import TaskMembers from "./TaskMembers/TaskMembers";
 import EditTask from "../../../components/Tasks/EditTask/EditTask";
 import Comments from "../../../components/Comments/Comments";
 import MobileJumbotron from "../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
+import MenuContext from "../../../context/menu-context";
 
 class ViewTask extends Component {
+  _menuSet = false;
+  static contextType = MenuContext;
+
   constructor(props) {
     super(props);
 
     props.initTask(props.match.params.id);
   }
+
+  componentDidUpdate() {
+    if (!this.props.taskLoading && !this._menuSet) this.setMenuItemsHandler();
+  }
+
+  componentWillUnmount() {
+    console.log("UNMOUNT");
+
+    this._menuSet = false;
+  }
+
+  setMenuItemsHandler = () => {
+    if (!this.props.task.completed) {
+      this.context.setMenuItems([
+        {
+          label: "Complete",
+          icon: "done",
+          to: "/task/" + this.props.match.params.id,
+          clicked: () =>
+            this.props.completeTask(
+              this.props.match.params.id,
+              this.props.history.push
+            )
+        }
+      ]);
+    }
+
+    this._menuSet = true;
+  };
 
   render() {
     const taskId = this.props.match.params.id;
@@ -86,20 +119,7 @@ class ViewTask extends Component {
               <h1>About the task</h1>
               <p>{this.props.task.description}</p>
 
-              {!this.props.task.taskDone ? (
-                <Button
-                  btnType="Primary"
-                  clicked={() =>
-                    this.props.completeTask(taskId, this.props.history.push)
-                  }
-                  disabled={this.props.task.completed}
-                >
-                  <i className="material-icons">done</i>
-                  {this.props.task.completed ? "Completed" : "Complete Task"}
-                </Button>
-              ) : (
-                <p>This task is now closed!</p>
-              )}
+              {this.props.task.taskDone && <p>This task is now closed!</p>}
 
               <br />
 

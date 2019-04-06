@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import "./App.css";
 import "blueprint-css/dist/blueprint.min.css";
 
@@ -13,52 +13,64 @@ import ViewGroup from "./views/Group/ViewGroup/ViewGroup";
 import ViewTask from "./views/Tasks/ViewTask/ViewTask";
 import ViewUser from "./views/User/ViewUser/ViewUser";
 import Notification from "./views/Notification/Notification";
+import MenuContext from "./context/menu-context";
 
 const AdminMain = React.lazy(() => import("./views/Admin/Main/Main"));
 
-const App = props => (
-  <Layout>
-    <Switch>
-      {/* Auth Page */}
-      <Route exact path="/auth" component={AuthPage} />
+const App = props => {
+  const [menuItems, setMenuItems] = useState([]);
 
-      {/* Home page */}
-      <Route exact path="/" component={Homepage} />
+  return (
+    <MenuContext.Provider
+      value={{
+        menuItems,
+        setMenuItems
+      }}
+    >
+      <Layout>
+        <Switch>
+          {/* Auth Page */}
+          <Route exact path="/auth" component={AuthPage} />
 
-      {/* Group page */}
-      <Route exact path="/group/:id" component={ViewGroup} />
+          {/* Home page */}
+          <Route exact path="/" component={Homepage} />
 
-      {/* Tasks */}
-      <Route exact path="/task/:id" component={ViewTask} />
+          {/* Group page */}
+          <Route exact path="/group/:id" component={ViewGroup} />
 
-      {/* User  */}
-      <Route exact path="/user/:id" component={ViewUser} />
+          {/* Tasks */}
+          <Route exact path="/task/:id" component={ViewTask} />
 
-      {/* Admin */}
+          {/* User  */}
+          <Route exact path="/user/:id" component={ViewUser} />
 
-      <Route
-        exact
-        path="/admin/"
-        render={innerProps => (
-          <>
-            <Suspense fallback={<Spinner />}>
-              <AdminMain {...innerProps} />
-            </Suspense>
-          </>
-        )}
-      />
+          {/* Admin */}
 
-      {/* Notification */}
-      <Route exact path="/notification" component={Notification} />
+          <Route
+            exact
+            path="/admin/"
+            render={innerProps => (
+              <>
+                <Suspense fallback={<Spinner />}>
+                  <AdminMain {...innerProps} />
+                </Suspense>
+              </>
+            )}
+          />
 
-      <Route
-        exact
-        path="/profile"
-        render={() => <Redirect to="/user/current-user" />}
-      />
+          {/* Notification */}
+          <Route exact path="/notification" component={Notification} />
 
-      <Redirect to="/" />
-    </Switch>
-  </Layout>
-);
+          <Route
+            exact
+            path="/profile"
+            render={() => <Redirect to="/user/current-user" />}
+          />
+
+          <Redirect to="/" />
+        </Switch>
+      </Layout>
+    </MenuContext.Provider>
+  );
+};
 export default App;
