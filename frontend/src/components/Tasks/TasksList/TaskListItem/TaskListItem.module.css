@@ -24,8 +24,23 @@ a.Link {
   background-color: #4caf50;
 }
 
-.EditButton {
-  background-color: #8080ff;
+/* Animations */
+.Enter {
+  opacity: 0;
+}
+
+.EnterActive {
+  opacity: 1;
+  transform: opacity 0.3s ease-out;
+}
+
+.Exit {
+  opacity: 1;
+}
+
+.ExitActive {
+  opacity: 0;
+  transform: opacity 0.3s ease-out;
 }
 
 /* Mobile */
