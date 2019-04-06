@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
 import classes from "./TasksList.module.css";
+import { connect } from "react-redux";
+import * as actions from "../../../store/actions";
 
 import SearchInput, { createFilter } from "react-search-input";
 import TaskListItem from "./TaskListItem/TaskListItem";
@@ -19,6 +21,8 @@ class TasksList extends Component {
       createFilter(this.state.searchTerm, ["title", "description"])
     );
 
+    console.log(this.props);
+
     return (
       <div>
         <SearchInput onChange={this.searchUpdated} className="search-input" />
@@ -31,6 +35,8 @@ class TasksList extends Component {
                 id={task.id}
                 title={task.title}
                 description={task.description}
+                isCompleted={task.completed}
+                completeTask={() => this.props.completedTask(task.id)}
               />
             ))}
           </ul>
@@ -42,4 +48,16 @@ class TasksList extends Component {
   }
 }
 
-export default TasksList;
+const mapStateToProps = state => ({
+  isAdmin: state.auth.user.isAdmin,
+  currentUid: state.auth.user.id
+});
+
+const mapDispatchToProps = dispatch => ({
+  completedTask: taskId => dispatch(actions.completeTask(taskId, url => {}))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TasksList);

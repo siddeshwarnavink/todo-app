@@ -65,6 +65,14 @@ const tasksSuccess = (state, action) => {
   });
 };
 
+const removeTask = (state, action) => {
+  let updatedTasks = [...state.tasks].filter(task => task.id !== action.taskId);
+
+  return updateObject(state, {
+    tasks: updatedTasks
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GROUP_TASKS_START:
@@ -90,6 +98,9 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.TASKS_SUCCESS:
       return tasksSuccess(state, action);
+
+    case actionTypes.REMOVE_TASK:
+      return removeTask(state, action);
 
     default:
       return state;

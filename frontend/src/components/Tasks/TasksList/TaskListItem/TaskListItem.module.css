@@ -10,13 +10,22 @@ a.Link {
   border: 1px solid #cccccc;
 }
 
-.TaskListItem > .DetailsDisplay > .Title {
-  margin: 2px 0px;
-}
-
 .TaskListItem > .DetailsDisplay > .Description {
   font-size: 14px;
   color: #777777;
+}
+
+.CompleteButton, .EditButton {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.CompleteButton {
+  background-color: #4caf50;
+}
+
+.EditButton {
+  background-color: #8080ff;
 }
 
 /* Mobile */

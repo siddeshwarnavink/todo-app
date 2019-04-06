@@ -194,7 +194,7 @@ return [
         AuthRequired($root);
 
         $tasks = [];
-        $relationTasks = DB::table('task_user')->where('user_id', $root['isAuth']->user->id)->get();
+        $relationTasks = DB::table('task_user')->where('user_id', $root['isAuth']->user->id)->where('completed', 0)->get();
 
         foreach($relationTasks as $relationTask) {
             $raw_tasks = Task::where('id', $relationTask->task_id)->get();

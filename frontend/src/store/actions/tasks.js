@@ -40,6 +40,11 @@ const tasksSuccess = tasks => ({
   tasks
 });
 
+const removeTask = taskId => ({
+  type: actionTypes.REMOVE_TASK,
+  taskId
+});
+
 // Async
 export const initGroupTasks = groupId => dispatch => {
   dispatch(groupTaskStart());
@@ -53,6 +58,10 @@ export const initGroupTasks = groupId => dispatch => {
             id,
             title,
             description
+            creator {
+              id
+            }
+            completed
           }
         }
         `
@@ -179,6 +188,34 @@ export const completeTask = (taskId, goFunc) => dispatch => {
       );
       goFunc("/task/" + taskId);
       dispatch(initTask(taskId));
+      dispatch(removeTask(taskId));
+    });
+};
+
+export const initTasks = () => dispatch => {
+  dispatch(tasksStart());
+
+  axios
+    .post(
+      `/?token=${localStorage.getItem("token")}`,
+      JSON.stringify({
+        query: `
+        {
+          tasks {
+            id
+            title
+            description
+            creator {
+              id
+            }
+            completed
+          }
+        }
+        `
+      })
+    )
+    .then(({ data }) => {
+      dispatch(tasksSuccess(data.data.tasks));
     });
 };
 
@@ -212,28 +249,5 @@ export const editTask = (task, taskId, goFunc) => dispatch => {
       );
       goFunc("/task/" + taskId);
       dispatch(initTask(taskId));
-    });
-};
-
-export const initTasks = () => dispatch => {
-  dispatch(tasksStart());
-
-  axios
-    .post(
-      `/?token=${localStorage.getItem("token")}`,
-      JSON.stringify({
-        query: `
-        {
-          tasks {
-            id
-            title
-            description
-          }
-        }
-        `
-      })
-    )
-    .then(({ data }) => {
-      dispatch(tasksSuccess(data.data.tasks));
     });
 };
