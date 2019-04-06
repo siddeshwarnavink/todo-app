@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 
 import classes from "./ViewGroup.module.css";
 import * as actions from "../../../store/actions";
@@ -12,8 +12,9 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import GroupTasks from "./GroupTasks/GroupTasks";
 import GroupMembers from "./GroupMembers/GroupMembers";
 import GroupEdit from "./GroupEdit/GroupEdit";
-import MobileJumbotron from "../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
-
+const MobileJumbotron = React.lazy(() =>
+  import("../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron")
+);
 class ViewGroup extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ class ViewGroup extends Component {
     return (
       <div>
         {!this.props.groupsLoading ? (
-          <>
+          <Suspense fallback={<Spinner />}>
             <BrowserView>
               <Jumbotron>
                 <h1>{this.props.group.title}</h1>
@@ -97,7 +98,7 @@ class ViewGroup extends Component {
                 </TabPanel>
               )}
             </Tabs>
-          </>
+          </Suspense>
         ) : (
           <Spinner />
         )}

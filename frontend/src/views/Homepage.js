@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { connect } from "react-redux";
 
 import * as actions from "../store/actions";
@@ -9,9 +9,11 @@ import { BrowserView, MobileView } from "react-device-detect";
 import GroupCard from "../components/Groups/GroupCard/GroupCard";
 import Spinner from "../components/UI/Spinner/Spinner";
 import TasksList from "../components/Tasks/TasksList/TasksList";
-import MobileJumbotron from "../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
 import Notificatons from "./Notification/Notification";
 import NotificationContext from "../context/notification-context";
+const MobileJumbotron = React.lazy(() =>
+  import("../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron")
+);
 
 class Homepage extends Component {
   constructor(props) {
@@ -51,7 +53,7 @@ class Homepage extends Component {
     }
 
     return (
-      <>
+      <Suspense fallback={<Spinner />}>
         <BrowserView>
           <main>
             <h1>Tasks</h1>
@@ -108,7 +110,7 @@ class Homepage extends Component {
             </TabPanel>
           </Tabs>
         </MobileView>
-      </>
+      </Suspense>
     );
   }
 }

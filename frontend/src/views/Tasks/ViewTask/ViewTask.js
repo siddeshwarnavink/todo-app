@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { connect } from "react-redux";
 
 import classes from "./ViewTask.module.css";
@@ -14,9 +14,10 @@ import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
 import TaskMembers from "./TaskMembers/TaskMembers";
 import EditTask from "../../../components/Tasks/EditTask/EditTask";
 import Comments from "../../../components/Comments/Comments";
-import MobileJumbotron from "../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron";
 import MenuContext from "../../../context/menu-context";
-
+const MobileJumbotron = React.lazy(() =>
+  import("../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron")
+);
 class ViewTask extends Component {
   _menuSet = false;
   static contextType = MenuContext;
@@ -60,7 +61,7 @@ class ViewTask extends Component {
     const taskId = this.props.match.params.id;
 
     return !this.props.taskLoading && this.props.task.creator ? (
-      <>
+      <Suspense fallback={<Spinner />}>
         <BrowserView>
           <Jumbotron>
             <h1>{this.props.task.title}</h1>
@@ -156,7 +157,7 @@ class ViewTask extends Component {
             </TabPanel>
           ) : null}
         </Tabs>
-      </>
+      </Suspense>
     ) : (
       <Spinner />
     );
