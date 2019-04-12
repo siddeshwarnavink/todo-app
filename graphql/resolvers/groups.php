@@ -17,7 +17,7 @@ return [
                 $groups[] = Group::where('id', $relationGroup->groupid)->first();
             }
         } else {
-            $groups = Group::all();
+            $groups = Group::where('company', $root['isAuth']->user->company )->get();
         }
 
         foreach($groups as $key => $group) {
