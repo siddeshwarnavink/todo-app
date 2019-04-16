@@ -37,7 +37,6 @@ const Layout = props => {
   }, []);
 
   useEffect(() => {
-    console.log("ROUTE CHANGED");
     updateMenuHandler();
   }, [props.location, props.isLoggedIn]);
 

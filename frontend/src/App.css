@@ -318,6 +318,10 @@ td.rdtYear:hover {
 }
 
 
+.canvasjs-chart-credit {
+  display: none;
+}
+
 /* React Swipe */
 
 .rc-swipeout {

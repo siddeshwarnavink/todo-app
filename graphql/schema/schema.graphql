@@ -67,6 +67,10 @@ type Comment {
   created_at: String!
 }
 
+type Report {
+  Ydata: String!
+}
+
 type RootQuery {
   login(email: String!, password: String!): AuthData
   validToken(token: String!): ValidateToken
@@ -80,6 +84,7 @@ type RootQuery {
   task(taskId: Int!): Task
 
   companyStaics: Company!
+  companyReport(type: Int!, duration: Int!): Report!
 
   comments(type: String!, payload: Int!): [Comment!]!
 

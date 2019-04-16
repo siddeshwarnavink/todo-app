@@ -9,6 +9,7 @@ import authRequired from "../../../hoc/authRequired/authRequired";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import CompanyEmployees from "./CompanyEmployees/CompanyEmployees";
 import CompanyGroups from "./CompanyGroups/CompanyGroups";
+import CompanyManage from "./CompanyManage/CompanyManage";
 
 class Main extends Component {
   state = {
@@ -113,12 +114,17 @@ class Main extends Component {
               <TabList>
                 <Tab>
                   <i className="material-icons">group</i>
-                  <span>Employees</span>
+                  <span>Users</span>
                 </Tab>
 
                 <Tab onClick={this.loadGroups}>
                   <i className="material-icons">group_work</i>
                   <span>Groups</span>
+                </Tab>
+
+                <Tab onClick={this.loadGroups}>
+                  <i className="material-icons">data_usage</i>
+                  <span>Manage</span>
                 </Tab>
               </TabList>
 
@@ -138,6 +144,10 @@ class Main extends Component {
                     members={this.state.members}
                     loadGroups={this.loadGroups}
                   />
+                </TabPanel>
+
+                <TabPanel>
+                  <CompanyManage />
                 </TabPanel>
               </main>
             </Tabs>

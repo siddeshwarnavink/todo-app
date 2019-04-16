@@ -1,0 +1,15 @@
+.MsgBox {
+    margin: 10px 0px;
+    padding:12px
+}
+
+.MsgBox.Warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+}
+
+.MsgBox .Msg {
+    position: relative;
+    top: -5px;
+    right: -1rem;
+}

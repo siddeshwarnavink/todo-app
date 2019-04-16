@@ -12,9 +12,9 @@ import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
 import TaskMembers from "./TaskMembers/TaskMembers";
-import EditTask from "../../../components/Tasks/EditTask/EditTask";
 import Comments from "../../../components/Comments/Comments";
 import MenuContext from "../../../context/menu-context";
+import TaskManage from "./TaskManage/TaskManage";
 const MobileJumbotron = React.lazy(() =>
   import("../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron")
 );
@@ -33,8 +33,6 @@ class ViewTask extends Component {
   }
 
   componentWillUnmount() {
-    console.log("UNMOUNT");
-
     this._menuSet = false;
   }
 
@@ -109,9 +107,9 @@ class ViewTask extends Component {
             </Tab>
             {this.props.isAdmin ||
             this.props.task.creator.id === this.props.loggedInID ? (
-              <Tab>
-                <i className="material-icons">edit</i>
-                <span>Edit</span>
+              <Tab onClick={() => this.props.initTaskMembers(taskId)}>
+                <i className="material-icons">data_usage</i>
+                <span>Manage</span>
               </Tab>
             ) : null}
           </TabList>
@@ -143,17 +141,14 @@ class ViewTask extends Component {
           {this.props.isAdmin ||
           this.props.task.creator.id === this.props.loggedInID ? (
             <TabPanel>
-              <main className={classes.Main}>
-                {this.props.task.members && (
-                  <EditTask
-                    groupId={this.props.task.group.id}
-                    goFunc={this.props.history.push}
-                    taskId={taskId}
-                    taskData={this.props.task}
-                    taskMembers={this.props.task.members.map(m => m.user.id)}
-                  />
-                )}
-              </main>
+              {!this.props.taskMembersLoading && this.props.task.members && (
+                <TaskManage
+                  task={this.props.task}
+                  goFunc={this.props.history.push}
+                  taskId={taskId}
+                  taskMembers={this.props.taskMembers}
+                />
+              )}
             </TabPanel>
           ) : null}
         </Tabs>
