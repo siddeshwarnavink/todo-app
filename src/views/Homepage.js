@@ -112,6 +112,13 @@ class Homepage extends Component {
                               <h1>Groups</h1>
                               {groups}
                          </main>
+
+                         <Fab
+                              tooltip='Add Task'
+                              clicked={this.toggleAddTaskModel}
+                         >
+                              <i className='material-icons'>add</i>
+                         </Fab>
                     </BrowserView>
                     <MobileView>
                          <MobileJumbotron subtext={new Date().toDateString()}>
