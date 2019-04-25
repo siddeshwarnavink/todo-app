@@ -1,32 +1,33 @@
 // Auth
-export { auth, isLoggedIn, logout } from "./auth";
+export { auth, isLoggedIn, logout } from './auth';
 
 // Flash Notify
-export { notify } from "./flashNotify";
+export { notify } from './flashNotify';
 
 // Groups
 export {
-  initGroups,
-  group,
-  groupMembers,
-  addGroup,
-  editGroup,
-  deleteGroup
-} from "./group";
+     initGroups,
+     group,
+     groupMembers,
+     addGroup,
+     editGroup,
+     deleteGroup,
+} from './group';
 
 // Tasks
 export {
-  initGroupTasks,
-  initTask,
-  initTaskMembers,
-  createTask,
-  completeTask,
-  editTask,
-  initTasks
-} from "./tasks";
+     initGroupTasks,
+     initTask,
+     initTaskMembers,
+     createTask,
+     completeTask,
+     editTask,
+     initTasks,
+     initTodos,
+} from './tasks';
 
-export { initNotifications, onClearNotifications } from "./notifications";
+export { initNotifications, onClearNotifications } from './notifications';
 
-export { initUser } from "./users";
+export { initUser } from './users';
 
-export { initComments, postComment } from "./comments";
+export { initComments, postComment } from './comments';

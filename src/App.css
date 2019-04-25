@@ -424,4 +424,15 @@ td.rdtYear:hover {
   .react-tabs__tab span {
     font-size: 0.8rem;
   }
+
+  .mobile-sub {
+    font-size: 12px;
+    margin-left: 12px;
+    font-weight: bold;
+    color: #777;
+  }
+
+  .react-tabs {
+    margin-bottom: 6rem;
+  }
 }
