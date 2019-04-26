@@ -31,6 +31,10 @@ class ViewTask extends Component {
           this.setState({ isTodo });
 
           this.props.initTask(this.props.match.params.id, isTodo);
+
+          if (!isTodo) {
+               this.props.initTaskMembers(this.props.match.params.id);
+          }
      }
 
      componentDidUpdate() {
@@ -127,11 +131,7 @@ class ViewTask extends Component {
                                    <span>About</span>
                               </Tab>
                               {!this.state.isTodo && (
-                                   <Tab
-                                        onClick={() =>
-                                             this.props.initTaskMembers(taskId)
-                                        }
-                                   >
+                                   <Tab>
                                         <i className='material-icons'>group</i>
                                         <span>Members</span>
                                    </Tab>
@@ -139,16 +139,7 @@ class ViewTask extends Component {
                               {this.props.isAdmin ||
                               this.props.task.creator.id ===
                                    this.props.loggedInID ? (
-                                   <Tab
-                                        onClick={
-                                             this.props.isTodo
-                                                  ? () =>
-                                                         this.props.initTaskMembers(
-                                                              taskId,
-                                                         )
-                                                  : this.blankFunc
-                                        }
-                                   >
+                                   <Tab>
                                         <i className='material-icons'>
                                              data_usage
                                         </i>
