@@ -13,6 +13,7 @@
 
 .TopStatusCard > .Logo {
     width: 10rem;
+    margin-right: 12px;
 }
 
 .TopStatusCard > h1 {

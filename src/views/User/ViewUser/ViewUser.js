@@ -19,17 +19,27 @@ class ViewUser extends Component {
 
      constructor(props) {
           super(props);
-          if (props.match.params.id === 'current-user') {
-               props.initUser(props.currentUser.id);
-          } else {
-               props.initUser(props.match.params.id);
-          }
+          this.initUserHandler();
      }
+
+     initUserHandler = () => {
+          if (this.props.match.params.id === 'current-user') {
+               this.props.initUser(this.props.currentUser.id);
+          } else {
+               this.props.initUser(this.props.match.params.id);
+          }
+     };
 
      toggleEditModalHandler = () => {
           this.setState(prvState => ({
                showEditModal: !prvState.showEditModal,
           }));
+     };
+
+     onEditUserHandler = () => {
+          this.toggleEditModalHandler();
+
+          this.initUserHandler();
      };
 
      render() {
@@ -73,15 +83,15 @@ class ViewUser extends Component {
                               <EditUser
                                    notifyFunc={this.props.notify}
                                    pushFunc={this.props.history.push}
-                                   reAuthFunc={this.props.reAuth}
-                                   userId={
-                                        this.props.match.params.id ===
-                                        'current-user'
-                                             ? this.props.currentUser.id
-                                             : this.props.match.params.id
-                                   }
+                                   userId={this.props.match.params.id}
                                    currentUser={this.props.user}
+                                   onEdit={this.onEditUserHandler}
                                    isAdmin={this.props.currentUser.isAdmin}
+                                   logoutUser={() =>
+                                        this.props.logoutHandler(
+                                             this.props.history.push,
+                                        )
+                                   }
                               />
                          )}
                     </Modal>
@@ -100,7 +110,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
      logoutHandler: goFunc => dispatch(actions.logout(goFunc)),
-     reAuth: () => dispatch(actions.auth(actions.isLoggedIn())),
      notify: message => dispatch(actions.notify({ message: message })),
      initUser: userId => dispatch(actions.initUser(userId)),
 });

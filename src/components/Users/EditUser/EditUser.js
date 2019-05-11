@@ -104,11 +104,13 @@ class EditUser extends Component {
           `,
                }),
           ).then(() => {
-               if (this.props.authUserId === this.props.userId) {
-                    localStorage.removeItem('token');
-                    window.location.assign('/');
+               if (
+                    this.props.userId === 'current-user' &&
+                    this.state.controls.password.value !== ''
+               ) {
+                    this.props.logoutUser();
                }
-               this.props.reAuthFunc();
+               this.props.onEdit();
                this.props.notifyFunc('User Successfully updated!');
           });
      };
