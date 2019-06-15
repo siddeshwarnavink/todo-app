@@ -374,15 +374,31 @@ td.rdtYear:hover {
 }
 
 
+main h1 {font-size: 21px;}
+
+.search-input > input {
+  border: 0;
+  margin: 5px 0px;
+}
+
+
+.react-tabs__tab {
+  border: 0;
+}
+
+.react-tabs__tab--selected {
+  color: #8080ff;
+  border-bottom: 2px solid #8080ff;
+  font-weight: 1000;
+}
+
+.react-tabs__tab-list {
+  background-color: #fff;
+}
+
 /* Mobile */
 @media (max-width: 600px) {
-  main h1 {font-size: 21px;}
-
-  .search-input > input {
-    border: 0;
-    margin: 5px 0px;
-  }
-
+ 
   .rdtOpen .rdtPicker {
     margin: auto;
   }
@@ -401,11 +417,7 @@ td.rdtYear:hover {
     overflow: hidden;
   }
 
-  .react-tabs__tab--selected {
-    color: #8080ff;
-    border: 0;
-    font-weight: 1000;
-  }
+  
 
   .react-tabs__tab:first-child {
     margin-left: 5%;
@@ -425,14 +437,16 @@ td.rdtYear:hover {
     font-size: 0.8rem;
   }
 
-  .mobile-sub {
-    font-size: 12px;
-    margin-left: 12px;
-    font-weight: bold;
-    color: #777;
-  }
-
+ 
   .react-tabs {
     margin-bottom: 6rem;
   }
+}
+
+
+.mobile-sub {
+  font-size: 12px;
+  margin-left: 12px;
+  font-weight: bold;
+  color: #777;
 }

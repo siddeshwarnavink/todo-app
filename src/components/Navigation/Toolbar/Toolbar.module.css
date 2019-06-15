@@ -6,7 +6,7 @@
   left: 0;
   padding: 0rem 1rem;
   background-color: #ffffff;
-  border-bottom: 1px solid #cccccc;
+  /* border-bottom: 1px solid #cccccc; */
   display: flex;
   align-items: center;
   z-index: 200000;

@@ -44,9 +44,9 @@ a.Link {
 }
 
 /* Mobile */
-@media (max-width: 600px) {
+/* @media (max-width: 600px) { */
   .TaskListItem .DetailsDisplay {
     border: 0;
     border-bottom: 0.01rem solid #efefef;
   }
-}
+/* } */
