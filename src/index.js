@@ -23,39 +23,39 @@ import notificationReducer from "./store/reducers/notifications";
 import usersReducer from "./store/reducers/users";
 
 const composeEnhancers =
-  process.env.NODE_ENV === "development"
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-      : compose
-    : compose;
+     process.env.NODE_ENV === "development"
+          ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+               ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+               : compose
+          : compose;
 
 const rootReducers = combineReducers({
-  auth: authReducer,
-  flashNotify: flashNotifyReducer,
-  groups: groupsReducer,
-  tasks: tasksReducer,
-  notification: notificationReducer,
-  users: usersReducer,
-  comments: commentsReducer
+     auth: authReducer,
+     flashNotify: flashNotifyReducer,
+     groups: groupsReducer,
+     tasks: tasksReducer,
+     notification: notificationReducer,
+     users: usersReducer,
+     comments: commentsReducer,
 });
 
 const store = createStore(
-  rootReducers,
-  composeEnhancers(applyMiddleware(thunk))
+     rootReducers,
+     composeEnhancers(applyMiddleware(thunk)),
 );
 
 const app = (
-  <Provider store={store}>
-    <BrowserRouter>
-      {process.env.NODE_ENV === "development" ? (
-        <App />
-      ) : (
-        <HttpsRedirect>
-          <App />
-        </HttpsRedirect>
-      )}
-    </BrowserRouter>
-  </Provider>
+     <Provider store={store}>
+          <BrowserRouter>
+               {process.env.NODE_ENV === "development" ? (
+                    <App />
+               ) : (
+                    <HttpsRedirect>
+                         <App />
+                    </HttpsRedirect>
+               )}
+          </BrowserRouter>
+     </Provider>
 );
 
 ReactDOM.render(app, document.getElementById("root"));
@@ -63,4 +63,4 @@ ReactDOM.render(app, document.getElementById("root"));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.register();
+serviceWorker.unregister();

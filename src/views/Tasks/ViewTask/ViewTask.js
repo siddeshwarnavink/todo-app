@@ -1,22 +1,22 @@
-import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router-dom';
-import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
-import { BrowserView, MobileView } from 'react-device-detect';
-import { connect } from 'react-redux';
-import queryString from 'query-string';
+import React, { Component, Suspense } from "react";
+import { Link } from "react-router-dom";
+import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
+import { BrowserView, MobileView } from "react-device-detect";
+import { connect } from "react-redux";
+import queryString from "query-string";
 
-import classes from './ViewTask.module.css';
-import * as actions from '../../../store/actions';
-import authRequired from '../../../hoc/authRequired/authRequired';
-import Button from '../../../components/UI/Button/Button';
-import Spinner from '../../../components/UI/Spinner/Spinner';
-import Jumbotron from '../../../components/UI/Jumbotron/Jumbotron';
-import TaskMembers from './TaskMembers/TaskMembers';
-import Comments from '../../../components/Comments/Comments';
-import MenuContext from '../../../context/menu-context';
-import TaskManage from './TaskManage/TaskManage';
+import classes from "./ViewTask.module.css";
+import * as actions from "../../../store/actions";
+import authRequired from "../../../hoc/authRequired/authRequired";
+import Button from "../../../components/UI/Button/Button";
+import Spinner from "../../../components/UI/Spinner/Spinner";
+import Jumbotron from "../../../components/UI/Jumbotron/Jumbotron";
+import TaskMembers from "./TaskMembers/TaskMembers";
+import Comments from "../../../components/Comments/Comments";
+import MenuContext from "../../../context/menu-context";
+import TaskManage from "./TaskManage/TaskManage";
 const MobileJumbotron = React.lazy(() =>
-     import('../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron'),
+     import("../../../components/UI/Jumbotron/MobileJumbotron/MobileJumbotron"),
 );
 class ViewTask extends Component {
      _menuSet = false;
@@ -26,7 +26,7 @@ class ViewTask extends Component {
 
      componentDidMount() {
           const params = queryString.parse(this.props.location.search);
-          const isTodo = params.isTodo === 'true';
+          const isTodo = params.isTodo === "true";
 
           this.setState({ isTodo });
 
@@ -50,9 +50,9 @@ class ViewTask extends Component {
           if (!this.props.task.completed) {
                this.context.setMenuItems([
                     {
-                         label: 'Complete',
-                         icon: 'done',
-                         to: '/task/' + this.props.match.params.id,
+                         label: "Complete",
+                         icon: "done",
+                         to: "/task/" + this.props.match.params.id,
                          clicked: () =>
                               this.props.completeTask(
                                    this.props.match.params.id,
@@ -78,19 +78,21 @@ class ViewTask extends Component {
                               <h1>{this.props.task.title}</h1>
                               {this.props.task.creator && !this.state.isTodo ? (
                                    <sub>
-                                        Task created by{' '}
+                                        Task created by{" "}
                                         <Link
                                              to={`/user/${
                                                   this.props.task.creator.id
                                              }`}
-                                             style={{ color: '#8080ff' }}
+                                             style={{ color: "#8080ff" }}
                                         >
                                              {this.props.task.creator.username}
                                         </Link>
                                    </sub>
                               ) : null}
-                              {!this.props.task.taskDone ||
-                              this.state.isTodo ? (
+                              {this.props.isAdmin ||
+                              (this.props.task.creator &&
+                                   this.props.task.creator.id ===
+                                        this.props.loggedInID) ? (
                                    <Button
                                         btnType='Primary'
                                         clicked={() =>
@@ -103,8 +105,8 @@ class ViewTask extends Component {
                                    >
                                         <i className='material-icons'>done</i>
                                         {this.props.task.completed
-                                             ? 'Completed'
-                                             : 'Complete Task'}
+                                             ? "Completed"
+                                             : "Complete Task"}
                                    </Button>
                               ) : (
                                    <p>This task is now closed!</p>
@@ -159,11 +161,11 @@ class ViewTask extends Component {
                                    <br />
 
                                    <span className={classes.Dates}>
-                                        From{' '}
+                                        From{" "}
                                         {new Date(
                                              this.props.task.starts_at,
-                                        ).toDateString()}{' '}
-                                        to{' '}
+                                        ).toDateString()}{" "}
+                                        to{" "}
                                         {new Date(
                                              this.props.task.ends_at,
                                         ).toDateString()}
