@@ -8,12 +8,16 @@ import axios from '../../axios';
 
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import FlasNotify from '../../components/FlashNotify/FlashNotify';
+import QuickAction from '../../components/QuickAction/QuickAction'
 import NotificationContext from '../../context/notification-context';
 import MenuContext from '../../context/menu-context';
+import QuickActionContext from '../../context/quickAction-context';
 
 const Layout = props => {
      const menuContext = useContext(MenuContext);
      const [notificationCount, setNotificationCount] = useState(0);
+     const [selectedItems, setSelectedItems] = useState([]);
+     const [quickActionPayload, setQuickActionPayload] = useState('');
 
      useEffect(() => {
           if (localStorage.getItem('token') !== null) {
@@ -70,21 +74,88 @@ const Layout = props => {
           menuContext.setMenuItems(menuItems);
      };
 
+     
+
      return (
           <NotificationContext.Provider value={notificationCount}>
-               <Toolbar
-                    isLoggedIn={props.isLoggedIn}
-                    isAdmin={props.isAdmin}
-                    logo={props.logo}
-                    userId={props.userId}
-               />
-               <div>{props.children}</div>
+               <QuickActionContext.Provider value={{
+                    selected: selectedItems,
+                    payload: quickActionPayload,
+                    onSelect: (key, payload) => {
+                         const selectedItems_ = [...selectedItems];
+                         selectedItems_.push(key);
 
-               <div className={classes.FlasNotifyArea}>
-                    {props.notifyMessages.map((message, i) => (
-                         <FlasNotify key={i}>{message.message}</FlasNotify>
-                    ))}
-               </div>
+                         setSelectedItems(selectedItems_);
+                         setQuickActionPayload(payload);
+                    },
+                    onClear: () => {
+                         setSelectedItems([]);
+                         setQuickActionPayload('');
+                    },
+                    onDelete: () => {
+                         const prms = [];
+
+                         switch(quickActionPayload) {
+                              case 'task':
+                                   selectedItems.forEach(taskId => {
+                                        prms.push(axios.post(
+                                             `/?token=${localStorage.getItem('token')}`,
+                                             JSON.stringify({
+                                                  query: `
+                                                       mutation {
+                                                            deleteTask(id: ${taskId})
+                                                       }
+                                                  `,
+                                             }),
+                                        ))
+                                   });
+                                   break;
+                              default: break;
+                         }
+
+                         Promise.all(prms).then(res => {
+                              console.log(res);
+                              window.location.reload();
+                         })
+                    },
+                    // TASK ONLY ACTION
+                    onComplete: () => {
+                         const prms = [];
+
+                         selectedItems.forEach(taskId => {
+                              prms.push(axios.post(
+                                   `/?token=${localStorage.getItem('token')}`,
+                                   JSON.stringify({
+                                        query: `
+                                             mutation {
+                                                  completeTask(taskId: ${taskId})
+                                             }
+                                        `,
+                                   }),
+                              ))
+                         });
+
+                         Promise.all(prms).then(res => {
+                              console.log(res);
+                              window.location.reload();
+                         })
+                    }
+               }}>
+                    <Toolbar
+                         isLoggedIn={props.isLoggedIn}
+                         isAdmin={props.isAdmin}
+                         logo={props.logo}
+                         userId={props.userId}
+                    />
+                    <div>{props.children}</div>
+
+                    <div className={classes.FlasNotifyArea}>
+                         {props.notifyMessages.map((message, i) => (
+                              <FlasNotify key={i}>{message.message}</FlasNotify>
+                         ))}
+                    </div>
+                    {selectedItems.length > 0 && <QuickAction />}
+               </QuickActionContext.Provider>
           </NotificationContext.Provider>
      );
 };

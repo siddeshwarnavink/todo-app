@@ -1,0 +1,37 @@
+.QuickAction {
+    z-index: 99999999999;
+    outline: none;
+    cursor: pointer;
+    display: inline;
+    padding: 14px 16px;
+    background-color: inherit;
+    border-bottom: 1px solid #cccccc;
+    max-height: 75px;
+    margin: auto;
+    box-sizing: 0 0 0 1 10px #efefef;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background-color: #fff;
+    text-align: center;
+}
+
+.QuickAction ul {
+    list-style: none;
+}
+
+.QuickAction ul li {
+    display: inline;
+}
+
+.QuickAction ul li button {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    padding: 10px 16px;
+    padding-top: 0;
+}
