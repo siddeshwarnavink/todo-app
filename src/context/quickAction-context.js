@@ -7,4 +7,5 @@ export default React.createContext({
   onClear: () => {},
   onDelete: () => {},
   onComplete: () => {},
+  onUnSelect: () => {}
 });

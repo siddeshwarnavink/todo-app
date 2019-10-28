@@ -28,6 +28,10 @@ export const TASKS_START = 'TASKS_START';
 export const TASKS_SUCCESS = 'TASKS_SUCCESS';
 export const REMOVE_TASK = 'REMOVE_TASK';
 export const SET_TODOS = 'SET_TODOS';
+export const DELETE_TASK = "DELETE_TASK";
+export const DELETE_TODO = "DELETE_TODO";
+export const COMPLETE_TASK_FROM_LST = "COMPLETE_TASK_FROM_LST";
+export const COMPLETE_TODO_FROM_LST = "COMPLETE_TODO_FROM_LST"
 
 // Notifications
 export const NOTIFICATION_START = 'NOTIFICATION_START';

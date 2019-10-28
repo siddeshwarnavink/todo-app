@@ -24,6 +24,8 @@ export {
      editTask,
      initTasks,
      initTodos,
+     deleteTasksOrTodos,
+     completeTaskOrTodoFromList
 } from './tasks';
 
 export { initNotifications, onClearNotifications } from './notifications';

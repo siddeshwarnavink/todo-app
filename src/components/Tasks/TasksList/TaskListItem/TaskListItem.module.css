@@ -43,6 +43,14 @@ a.Link {
   transform: opacity 0.3s ease-out;
 }
 
+.SelectedCheck {
+  display: block;
+  float: left;
+  padding: 5px;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
 /* Mobile */
 /* @media (max-width: 600px) { */
   .TaskListItem .DetailsDisplay {

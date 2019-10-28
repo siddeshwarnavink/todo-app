@@ -50,6 +50,27 @@ const setTodos = todos => ({
      todos,
 });
 
+const deleteTask = id => ({
+     type: actionTypes.DELETE_TASK,
+     id
+})
+
+const deleteTodo = id => ({
+     type: actionTypes.DELETE_TODO,
+     id
+})
+
+const completeTaskFromLst = id => ({
+     type: actionTypes.COMPLETE_TASK_FROM_LST,
+     id
+})
+
+
+const completeTodoFromLst = id => ({
+     type: actionTypes.COMPLETE_TODO_FROM_LST,
+     id
+})
+
 // Async
 export const initGroupTasks = groupId => dispatch => {
      dispatch(groupTaskStart());
@@ -310,3 +331,17 @@ export const initTodos = () => dispatch => {
           dispatch(setTodos(data.data.groupTask));
      });
 };
+
+export const deleteTasksOrTodos = idArr => dispatch =>  {
+     idArr.forEach(id => {
+          dispatch(deleteTask(id));
+          dispatch(deleteTodo(id));
+     })
+}
+
+export const completeTaskOrTodoFromList = idArr => dispatch => {
+     idArr.forEach(id => {
+          dispatch(completeTaskFromLst(id));
+          dispatch(completeTodoFromLst(id));
+     })
+}

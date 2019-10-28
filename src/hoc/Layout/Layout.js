@@ -88,11 +88,19 @@ const Layout = props => {
                          setSelectedItems(selectedItems_);
                          setQuickActionPayload(payload);
                     },
+                    onUnSelect: (key) => {
+                         let selectedItems_ = [...selectedItems];
+                         selectedItems_ = selectedItems_.filter(k => k !== key)
+                         setSelectedItems(selectedItems_);
+                    },
                     onClear: () => {
                          setSelectedItems([]);
                          setQuickActionPayload('');
                     },
                     onDelete: () => {
+                         props.deleteTaskOrTodo(selectedItems);
+                         props.flasNotify({ message: "Task(s) deleted" });
+                         
                          const prms = [];
 
                          switch(quickActionPayload) {
@@ -115,12 +123,15 @@ const Layout = props => {
 
                          Promise.all(prms).then(res => {
                               console.log(res);
-                              window.location.reload();
-                         })
+                         });
                     },
                     // TASK ONLY ACTION
                     onComplete: () => {
+                         props.flasNotify({ message: "Task(s) completed" });
+
                          const prms = [];
+
+                         props.completeTaskOrTodoFromList(selectedItems)
 
                          selectedItems.forEach(taskId => {
                               prms.push(axios.post(
@@ -137,7 +148,6 @@ const Layout = props => {
 
                          Promise.all(prms).then(res => {
                               console.log(res);
-                              window.location.reload();
                          })
                     }
                }}>
@@ -170,6 +180,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
      flasNotify: messages => dispatch(actions.notify(messages)),
+     deleteTaskOrTodo: (ids) => dispatch(actions.deleteTasksOrTodos(ids)),
+     completeTaskOrTodoFromList: (ids) => dispatch(actions.completeTaskOrTodoFromList(ids))
 });
 
 export default connect(

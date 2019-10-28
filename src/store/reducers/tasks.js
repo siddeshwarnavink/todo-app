@@ -83,6 +83,19 @@ const setTodos = (state, action) => {
      });
 };
 
+const deleteTask = (state, action) => {
+     return updateObject(state, {
+          tasks: state.tasks.filter(t => t.id !== action.id),
+          groupTasks: state.groupTasks.filter(t => t.id !== action.id),
+     });
+}
+
+const deleteTodo = (state, action) => {
+     return updateObject(state, {
+          todos: state.todos.filter(t => t.id !== action.id)
+     });
+}
+
 const reducer = (state = initialState, action) => {
      switch (action.type) {
           case actionTypes.GROUP_TASKS_START:
@@ -114,6 +127,18 @@ const reducer = (state = initialState, action) => {
 
           case actionTypes.SET_TODOS:
                return setTodos(state, action);
+
+          case actionTypes.DELETE_TASK:
+               return deleteTask(state, action);
+          
+          case actionTypes.DELETE_TODO:
+               return deleteTodo(state, action);
+
+          case actionTypes.COMPLETE_TASK_FROM_LST:
+               return deleteTask(state, action);
+
+          case actionTypes.COMPLETE_TODO_FROM_LST:
+               return deleteTodo(state, action);
 
           default:
                return state;
